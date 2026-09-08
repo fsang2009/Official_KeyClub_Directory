@@ -1,90 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Club Directory</title>
-    <link rel ="stylesheet" href ="directory.css">
-    <script type ="module" src ="directory.js" defer></script>
-</head>
-<body>
-    <section class ="header" class ="header">
-        <div class ="header-main" class ="header-main">
-            <h1>Southport Key Club Directory</h1>
-            <p>View points, hours, attendance, and fee payment.</p>
-        </div>
-        
-        <div class ="select-directory-tab">
-            <a href ="index.html" class ="directory-tab-option"> Hours and Points</a>
-            <a href ="memberFee.html" class ="directory-tab-option"> Member fees</a>
-            <a href ="attendance.html" class ="directory-tab-option">Attendance Log</a>        </div>
-        </div>
-    </section>
+<!DOCTYPE html> 
+<html lang="en"> 
+<head> 
+  <meta charset="UTF-8"> 
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"> 
+  <title>Key Club Directory</title> 
+  <link rel="stylesheet" href="directory.css"> 
+  <script type="module" src="directory.js" defer></script> 
+</head> 
+<body> 
+  <section class="header"> 
+    <div class="header-main"> 
+      <h1>Southport Key Club Directory</h1> 
+      <p>View points, hours, attendance, and fee payment.</p> 
+    </div> 
+    <div class="select-directory-tab"> 
+      <a href="index.html" class="directory-tab-option"> Hours and Points</a> 
+      <a href="memberFee.html" class="directory-tab-option"> Member fees</a> 
+      <a href="attendance.html" class="directory-tab-option">Attendance Log</a> 
+    </div> 
+  </section> 
 
+  <section class="main-directory"> 
+    <div class="tab-type"> 
+      <h2>You are currently viewing hours and points</h2> 
+    </div> 
+    <div class="search"> 
+      <input class="search-bar"> 
+      <button class="enter-search">Enter</button> 
+    </div> 
+    <button class="add-student" id="add-student-button"> Add Student </button> 
 
-
-    <section class ="main-directory" class ="main-directory">
-        <div class ="tab-type">
-            <h2>You are currently viewing hours and points</h2>
-        </div>
-        <div class ="search">
-            <input class ="search-bar">
-            <button class ="enter-search">Enter</button>
-        </div>
-
-        <button class ="add-student" id ="add-student-button">
-            Add Student
-        </button>
-
-        <!-- Add Student Modal -->
-        <div class="modal-overlay" id="add-student-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Add New Member</h2>
-                    <button class="modal-close" id="modal-close-btn">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <form class="add-student-form" id ="add-student-form">
-                        <div class="form-group">
-                            <label for="student-id">Student ID</label>
-                            <input type="text" id="student-id" name="student-id" required placeholder="Enter student ID">
-                            <span class="error-message" id="student-id-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="first-name">First Name</label>
-                            <input type="text" id="first-name" name="first-name" required placeholder="Enter first name">
-                            <span class="error-message" id="first-name-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="last-name">Last Name</label>
-                            <input type="text" id="last-name" name="last-name" required placeholder="Enter last name">
-                            <span class="error-message" id="last-name-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="grade">Grade</label>
-                            <select id="grade" name="grade" required>
-                                <option value="">Select grade</option>
-                                <option value="9">9th Grade</option>
-                                <option value="10">10th Grade</option>
-                                <option value="11">11th Grade</option>
-                                <option value="12">12th Grade</option>
-                            </select>
-                            <span class="error-message" id="grade-error"></span>
-                        </div>
-                        <div class="modal-actions">
-                            <button type="button" class="btn-cancel" id="modal-cancel-btn">Cancel</button>
-                            <button type="submit" class="btn-submit">Add Member</button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-
-        <div class ="student-info-container">
-            
+    <!-- Add Student Modal --> 
+    <div class="modal-overlay" id="add-student-modal"> 
+      <div class="modal-content"> 
+        <div class="modal-header"> 
+          <h2>Add New Member</h2> 
+          <button class="modal-close" id="modal-close-btn">&times;</button> 
+        </div> 
+        <div class="modal-body"> 
+          <form class="add-student-form" id="add-student-form"> 
+            <div class="form-group"> 
+              <label for="student-id">Student ID</label> 
+              <input type="text" id="student-id" name="student-id" required placeholder="Enter student ID"> 
+              <span class="error-message" id="student-id-error"></span> 
             </div> 
-        </div>
-    </section>
+            <div class="form-group"> 
+              <label for="first-name">First Name</label> 
+              <input type="text" id="first-name" name="first-name" required placeholder="Enter first name"> 
+              <span class="error-message" id="first-name-error"></span> 
+            </div> 
+            <div class="form-group"> 
+              <label for="last-name">Last Name</label> 
+              <input type="text" id="last-name" name="last-name" required placeholder="Enter last name"> 
+              <span class="error-message" id="last-name-error"></span> 
+            </div> 
+            <div class="form-group"> 
+              <label for="grade">Grade</label> 
+              <select id="grade" name="grade" required> 
+                <option value="">Select grade</option> 
+                <option value="9">9th Grade</option> 
+                <option value="10">10th Grade</option> 
+                <option value="11">11th Grade</option> 
+                <option value="12">12th Grade</option> 
+              </select> 
+              <span class="error-message" id="grade-error"></span> 
+            </div> 
+            <div class="modal-actions"> 
+              <button type="button" class="btn-cancel" id="modal-cancel-btn">Cancel</button> 
+              <button type="submit" class="btn-submit">Add Member</button> 
+            </div> 
+          </form> 
+        </div> 
+      </div> 
+    </div> 
 
-</body>
+    <div class="student-info-container" id="student-info-container"></div> 
+  </section> 
+</body> 
 </html>

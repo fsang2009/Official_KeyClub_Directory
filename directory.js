@@ -1,27 +1,27 @@
 import { database } from './firebaseconfig';
-import { getDoc, doc, collection, addDoc} from 'firebase/firestore';
+import { getDocs, doc, collection, addDoc, snapshotEqual} from 'firebase/firestore';
 
 const addStudentButton = document.getElementById('add-student-button');
-const studentList = document.querySelector('#student-info-container');
-document.addEventListener('DOMContentLoaded', renderStudentList());
 
-const renderStudentList = () =>{
+
+const renderStudentList = async() =>{
     let html ='';
     
-    const userCollection = collection(database, "users");
-
-    userCollection.forEach((doc)=>{
+    const snapshot = await getDocs(collection(database, "users"));
+    const studentList = document.getElementById('student-info-container');
+    snapshot.forEach((doc)=>{
+        const student = doc.data();
         html += `
         <div class="student-info-bar">
 
     <div class="student-main-info">
         <div class="student-name">
-            ${doc.firstName} ${doc.lastName}
+            ${student.firstName} ${student.lastName}
         </div>
 
         <div class="student-basic-info">
-            <span>ID: ${doc.studentID}</span>
-            <span>Grade: ${doc.studentGrade}</span>
+            <span>ID: ${student.studentID}</span>
+            <span>Grade: ${student.grade}</span>
         </div>
     </div>
 
@@ -29,41 +29,45 @@ const renderStudentList = () =>{
     <div class="student-stats">
 
         <div class="student-stat">
-            Hours: ${doc.hours}
+            Hours: ${student.hours}
+        
         </div>
 
         <div class="student-stat">
-            Points:${doc.points}
+            Points:${student.points}
         </div>
 
     </div>
 
 </div>
-        `;
-    })
 
+        `;
+        
+    })
+    console.log("studentList:", studentList);
     studentList.innerHTML = html;
 } 
 
+document.addEventListener('DOMContentLoaded', renderStudentList);
 const addStudentForm =  document.getElementById('add-student-form');
 
 addStudentForm.addEventListener('submit', async(event)=>{
     event.preventDefault();
-    const studentID = document.getElementById('student-id');
-    const studentFirstName = document.getElementById('first-name');
-    const studentLastName = document.getElementById('last-name');
-    const studentGrade = document.getElementById('grade');
+    const studentID = document.getElementById('student-id').value.trim();
+    const studentFirstName = document.getElementById('first-name').value.trim();
+    const studentLastName = document.getElementById('last-name').value.trim();
+    const studentGrade = Number(document.getElementById('grade').value);
 
     try{ const newStudent = await addDoc(
         collection(database, "users"), {
             studentID: studentID,
-            fistName: studentFirstName,
+            firstName: studentFirstName,
             lastName: studentLastName,
             grade: studentGrade,
 
             hours: 0,
             points: 0,
-            feedPaid: false,
+            feePaid: false,
         }
     )   
 
@@ -106,8 +110,3 @@ closeStudentModal.addEventListener('click',()=>{
     closeModal();
 })
 
-submitStudentAddButton.addEventListener('click',()=>{
-    addStudent();
-    closeModal();
-    
-})
