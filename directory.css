@@ -218,6 +218,22 @@ body {
    Use this class later when JS creates rows.
 ========================================= */
 
+.add-student{
+    padding: 8px;
+    border-radius: 10px;
+    margin-bottom: 10px;
+    border: none;
+    background-color: rgb(204, 204, 204);
+    color: black;
+    transition: transform 0.3s ease, color 0.3s ease, background-color 0.3s ease;
+}
+
+.add-student:hover{
+    cursor: pointer;
+    background-color: rgb(230, 227, 227);
+    transform: translateY(-3px);
+}
+
 .student-row {
     display: grid;
     grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
