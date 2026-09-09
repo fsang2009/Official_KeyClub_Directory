@@ -201,7 +201,7 @@ removeMultipleStudentsButton.addEventListener('click',(event)=>{
     checkboxes.forEach(checkbox => checkbox.classList.add('active'));
   } else{ removeMode = false;
     checkboxes.forEach(checkbox => checkbox.classList.remove('active'));
-    checkboxes.forEach(checkbox => checkbox.value = false)
+    checkboxes.forEach(checkbox => checkbox.checked = false)
   
     removeMultipleStudentsButton.innerText = 'Remove Students [Multiple]';
     confirmRemovalBtn.classList.remove('active');
@@ -209,4 +209,8 @@ removeMultipleStudentsButton.addEventListener('click',(event)=>{
 
 
 
+})
+
+confirmRemovalBtn.addEventListener('click',()=>{
+  
 })
