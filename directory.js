@@ -31,7 +31,8 @@ const renderStudentList = () => {
             
             <!-- 🔑 FIXED: Changed id to a class, and attached the Firestore ID to a data attribute -->
             <button class="remove-student" data-id="${docId}" style="background:red;">🗑️</button>
-          </div>
+            <input type ="checkbox" data-id ="${docId}" class ="remove-checkboxes"></input>
+            </div>
         </div>
       `;
     });
@@ -188,15 +189,24 @@ searchbar.addEventListener('input', async(event)=>{
 // remove multiple students function
 const removeMultipleStudentsButton = document.getElementById('remove-multiple-students-button');
 let removeMode = false;
+const confirmRemovalBtn = document.getElementById('confirm-remove-multiple');
+
 removeMultipleStudentsButton.addEventListener('click',(event)=>{
-  const checkboxes = document.querySelectorAll('remove-checkboxes');
+  console.log(removeMode);
+  const checkboxes = document.querySelectorAll('.remove-checkboxes');
   if (removeMode === false) {
     removeMode = true;
-  } else{ removeMode = false;}
-
-  if(removeMode === true){
+    removeMultipleStudentsButton.innerText = 'Remove Mode Active';
+    confirmRemovalBtn.classList.add('active');
     checkboxes.forEach(checkbox => checkbox.classList.add('active'));
-
+  } else{ removeMode = false;
+    checkboxes.forEach(checkbox => checkbox.classList.remove('active'));
+    checkboxes.forEach(checkbox => checkbox.value = false)
+  
+    removeMultipleStudentsButton.innerText = 'Remove Students [Multiple]';
+    confirmRemovalBtn.classList.remove('active');
   }
+
+
 
 })

@@ -725,11 +725,31 @@ body {
 }
 
 .remove-checkboxes{
-    display: "none";
+    display: none;
 }
 
 .remove-checkboxes.active{
-    display: "block";
+    display: block;
     height: 10px;
     width: auto;
+}
+
+.confirm-multiple-removal-btn{
+    display: none;
+}
+.confirm-multiple-removal-btn.active{
+    border-radius: 10px;
+    padding: 8px;
+    display: block;
+    color: white;
+    background-color: rgb(155, 50, 50);
+    
+}
+.confirm-multiple-removal-btn.active:hover{
+    cursor: pointer;
+}
+
+.remove-checkboxes{
+    width: 10px;
+    height: auto;
 }
