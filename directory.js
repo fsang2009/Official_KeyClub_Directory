@@ -176,9 +176,27 @@ searchbar.addEventListener('input', async(event)=>{
             
             <!-- 🔑 FIXED: Changed id to a class, and attached the Firestore ID to a data attribute -->
             <button class="remove-student" data-id="${docId}" style="background:red;">🗑️</button>
+            <input type ="checkbox" data-id ="${docId}" class ="remove-checkboxes"></input>
           </div>
         </div>
       `;
   })
   studentList.innerHTML = html;
+})
+
+
+// remove multiple students function
+const removeMultipleStudentsButton = document.getElementById('remove-multiple-students-button');
+let removeMode = false;
+removeMultipleStudentsButton.addEventListener('click',(event)=>{
+  const checkboxes = document.querySelectorAll('remove-checkboxes');
+  if (removeMode === false) {
+    removeMode = true;
+  } else{ removeMode = false;}
+
+  if(removeMode === true){
+    checkboxes.forEach(checkbox => checkbox.classList.add('active'));
+
+  }
+
 })
