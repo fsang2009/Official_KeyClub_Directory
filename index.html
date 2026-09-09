@@ -29,7 +29,7 @@
       <button class="enter-search">Enter</button> 
     </div> 
     <button class="add-student" id="add-student-button"> Add Student </button> 
-
+    <button id ="remove-multiple-students-button" class ="add-student" style ="color: white; background-color: rgb(163, 89, 89);">Remove Students [Multiple]</button>
     <!-- Add Student Modal --> 
     <div class="modal-overlay" id="add-student-modal"> 
       <div class="modal-content"> 
@@ -74,6 +74,17 @@
       </div> 
     </div> 
 
+    <div class="modal-overlay" id="remove-student-modal"> 
+      <div class="modal-content"> 
+        <div class="modal-header"> 
+          <h2>Are you sure you want to remove this member? Hours and Points will not be able to be recovered.</h2> 
+          <button class ="add-student" id = "confirm-student-removal">Yes</button>
+          <button class ="add-student" id ="cancel-student-removal">No</button>
+        </div>
+      </div>
+    </div>
+
+    </div>
     <div class="student-info-container" id="student-info-container"></div> 
   </section> 
 </body> 

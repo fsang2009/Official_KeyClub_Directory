@@ -713,3 +713,13 @@ body {
         min-width: 100px;
     }
 }
+
+.remove-student{
+    background-color: red;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.remove-student:hover{
+    cursor: pointer;
+}
