@@ -137,7 +137,7 @@ searchbar.addEventListener('input', async(event)=>{
   const key = event.target.value;
 
   const querySnapshot = await getDocs(
-    collection(db, "users")
+    collection(database, "users")
   );
 
   const renderArray = querySnapshot.docs.map(doc=>({id: doc.id, ...doc.data()}));
