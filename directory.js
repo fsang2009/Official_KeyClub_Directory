@@ -126,3 +126,54 @@ const closeModal = () => {
 cancelStudentAddButton.addEventListener('click', () => { closeModal(); });
 addStudentButton.addEventListener('click', () => { addStudentModal.classList.add('active'); });
 closeStudentModal.addEventListener('click', () => { closeModal(); });
+
+
+
+
+// search students function
+
+const searchbar = document.getElementById('search-bar');
+
+searchbar.addEventListener('input', async(event)=>{
+  const key = event.target.value;
+
+  const querySnapshot = await getDocs(
+    collection(db, "users")
+  );
+
+  const renderArray = querySnapshot.docs.map(doc=>({id: doc.id, ...doc.data()}));
+
+  const liveRenderArray = renderArray.reduce((acc, user)=>{
+    if ((user.firstName.contains(key)) || (user.lastName.contains(key)) || user.studentID.contains(Number(key))){
+      acc.push(user);
+    }
+  }, []) 
+
+  let html =''
+  liveRenderArray.forEach((student)=>{
+    const docId = student.id; // 🔑 Get the unique Firestore document ID
+    
+
+      html += `
+        <div class="student-info-bar">
+          <div class="student-main-info">
+            <div class="student-name">
+              ${student.firstName} ${student.lastName}
+            </div>
+            <div class="student-basic-info">
+              <span>ID: ${student.studentID}</span>
+              <span>Grade: ${student.grade}</span> 
+            </div>
+          </div>
+          <div class="student-stats">
+            <div class="student-stat">Hours: ${student.hours}</div>
+            <div class="student-stat">Points: ${student.points}</div>
+            
+            <!-- 🔑 FIXED: Changed id to a class, and attached the Firestore ID to a data attribute -->
+            <button class="remove-student" data-id="${docId}" style="background:red;">🗑️</button>
+          </div>
+        </div>
+      `;
+  })
+  studentList.innerHTML = html;
+})
