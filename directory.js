@@ -143,7 +143,7 @@ searchbar.addEventListener('input', async(event)=>{
   const renderArray = querySnapshot.docs.map(doc=>({id: doc.id, ...doc.data()}));
 
   const liveRenderArray = renderArray.reduce((acc, user)=>{
-    if ((user.firstName.contains(key)) || (user.lastName.contains(key)) || user.studentID.contains(Number(key))){
+    if ((user.firstName.includes(key)) || (user.lastName.includes(key)) || user.studentID.includes(Number(key))){
       acc.push(user);
     }
   }, []) 
