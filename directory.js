@@ -143,9 +143,15 @@ searchbar.addEventListener('input', async(event)=>{
   const renderArray = querySnapshot.docs.map(doc=>({id: doc.id, ...doc.data()}));
 
   const liveRenderArray = renderArray.reduce((acc, user)=>{
-    if ((user.firstName.includes(key)) || (user.lastName.includes(key)) || user.studentID.includes(Number(key))){
+    const cleanKey = key.replace(/\s+/g, '');
+    const userFirstName = user.firstName.toLowerCase();
+    const userLastName = user.lastName.toLowerCase();
+    const userFirstAndLastName = `${userFirstName}${userLastName}`
+    if ((userFirstName.includes(cleanKey)) || (userLastName.includes(cleanKey)) || (user.studentID.includes(Number(cleanKey))) || (userFirstAndLastName.includes(cleanKey))){
       acc.push(user);
     }
+
+    return acc;
   }, []) 
 
   let html =''
