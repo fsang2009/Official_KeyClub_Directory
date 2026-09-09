@@ -1,6 +1,5 @@
 import { database } from './firebaseconfig'; 
 import { collection, addDoc, onSnapshot, getDoc, doc, deleteDoc, getDocs } from 'firebase/firestore'; 
-import { getDocs } from 'firebase/firestore'
 const addStudentButton = document.getElementById('add-student-button');
 const studentList = document.getElementById('student-info-container'); // Moved out for clean access
 const removeStudentModal = document.getElementById('remove-student-modal');
