@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Key Club Directory</title>
     <link rel ="stylesheet" href ="directory.css">
+   
 </head>
 <body>
     <section class ="header" class ="header">
@@ -30,7 +31,7 @@
             <h2>You are currently viewing attendance logs</h2>
         </div>
         <div class ="search">
-            <input class ="search-bar">
+            <input class ="search-bar" id ="event-search-bar" placeholder ="Search events by name">
             <button class ="enter-search">Enter</button>
         </div>
         
@@ -77,10 +78,7 @@
                             <label for="event-description">Description</label>
                             <textarea id="event-description" name="event-description" rows="3" placeholder="Enter event description (optional)"></textarea>
                         </div>
-                        <div class="form-group">
-                            <label for="event-location">Location</label>
-                            <input type="text" id="event-location" name="event-location" placeholder="Enter location (optional)">
-                        </div>
+                
                         <div class="modal-actions">
                             <button type="button" class="btn-cancel" id="event-modal-cancel-btn">Cancel</button>
                             <button type="submit" class="btn-submit">Add Event</button>
@@ -95,6 +93,6 @@
             </div> 
         </div>
     </section>
-
+ <script src ="attendance.js" type ="module" defer></script>
 </body>
 </html>
