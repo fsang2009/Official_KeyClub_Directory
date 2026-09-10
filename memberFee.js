@@ -6,7 +6,8 @@ import {
   onSnapshot,
   doc,
   deleteDoc,
-  getDocs
+  getDocs,
+  updateDoc
 } from 'firebase/firestore';
 
 
@@ -64,6 +65,8 @@ let studentRemovalArray = [];
 // ============================================================
 
 const createStudentHTML = (student, docId) => {
+  const isPaid = student.feePaid === true;
+
   return `
     <div class="student-info-bar">
 
@@ -80,24 +83,41 @@ const createStudentHTML = (student, docId) => {
 
       </div>
 
+
       <div class="student-stats">
 
-        <div class="student-stat">
-          Hours: ${student.hours}
+        <!-- PAYMENT STATUS -->
+        <div class="student-payment-status">
+
+          <input
+            type="checkbox"
+            class="payment-checkbox"
+            data-id="${docId}"
+            id ="payment-status-text"
+            ${isPaid ? 'checked' : ''}
+          >
+
+          <span class="payment-status-label">
+            Student Payment Status
+          </span>
+
+          <span class="payment-status-text"  data-id= "${docId}">
+            ${isPaid ? 'Paid' : 'Not Paid'}
+          </span>
+
         </div>
 
-        <div class="student-stat">
-          Points: ${student.points}
-        </div>
 
+        <!-- REMOVE STUDENT BUTTON -->
         <button
           class="remove-student"
           data-id="${docId}"
-          style="background: red;"
         >
           🗑
         </button>
 
+
+        <!-- MULTIPLE REMOVE CHECKBOX -->
         <input
           type="checkbox"
           data-id="${docId}"
@@ -523,3 +543,39 @@ document.addEventListener(
     setupDeleteListener();
   }
 );
+
+// ============================================================
+// UPDATE PAYMENT STATUS
+// ============================================================
+
+studentList.addEventListener('change', async (event) => {
+  // 1. Target the checkbox by class instead of an ID
+  if (!event.target.classList.contains('payment-checkbox')) {
+    return;
+  }
+
+  const checkbox = event.target;
+  const studentID = checkbox.dataset.id;
+  
+
+  if (!studentID) {
+    console.error("Student ID missing from checkbox data attributes.");
+    return;
+  }
+
+  const studentDocRef = doc(database, "users", studentID);
+  
+
+  const isPaid = checkbox.checked; 
+
+  try {
+    await updateDoc(studentDocRef, {
+      feePaid: isPaid
+    });
+    console.log(`Database updated successfully! Paid status set to: ${isPaid}`);
+  
+  } catch (error) {
+    console.error(`Error updating student payment status:`, error);
+    checkbox.checked = !isPaid; 
+  }
+});

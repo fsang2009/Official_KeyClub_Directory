@@ -753,3 +753,398 @@ body {
     width: 10px;
     height: auto;
 }
+
+/* =========================================
+   STUDENT DIRECTORY LIST
+========================================= */
+
+.student-info-container {
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+
+    background: transparent;
+}
+
+
+/* =========================================
+   INDIVIDUAL STUDENT CARD
+========================================= */
+
+.student-info-bar {
+    width: 100%;
+    min-height: 88px;
+
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 30px;
+
+    padding: 18px 22px;
+
+    background-color: white;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+
+    box-shadow: 0 2px 8px rgba(15, 23, 42, 0.05);
+
+    transition:
+        transform 0.2s ease,
+        box-shadow 0.2s ease,
+        border-color 0.2s ease;
+}
+
+
+.student-info-bar:hover {
+    transform: translateY(-2px);
+
+    border-color: #cbd5e1;
+
+    box-shadow: 0 6px 18px rgba(15, 23, 42, 0.08);
+}
+
+
+/* =========================================
+   LEFT SIDE — STUDENT INFORMATION
+========================================= */
+
+.student-main-info {
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+    gap: 7px;
+}
+
+
+.student-name {
+    font-size: 1.05rem;
+    font-weight: 700;
+
+    color: #172033;
+}
+
+
+.student-basic-info {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+
+    gap: 14px;
+
+    font-size: 0.88rem;
+    color: #64748b;
+}
+
+
+.student-basic-info span {
+    white-space: nowrap;
+}
+
+
+/* =========================================
+   RIGHT SIDE — HOURS / POINTS / ACTIONS
+========================================= */
+
+.student-stats {
+    display: grid;
+
+    grid-template-columns:
+        minmax(105px, auto)
+        minmax(105px, auto)
+        38px
+        20px;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+/* Hours + Points boxes */
+
+.student-stat {
+    min-width: 105px;
+
+    padding: 9px 12px;
+
+    text-align: center;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    color: #334155;
+
+    background-color: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+}
+
+
+/* =========================================
+   DELETE STUDENT BUTTON
+========================================= */
+
+.remove-student {
+    width: 38px;
+    height: 38px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+
+    background-color: #fff1f2 !important;
+
+    font-size: 1rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        border-color 0.2s ease;
+}
+
+
+.remove-student:hover {
+    background-color: #ffe4e6 !important;
+
+    border-color: #fca5a5;
+
+    transform: scale(1.05);
+}
+
+
+/* =========================================
+   MULTIPLE REMOVE CHECKBOX
+========================================= */
+
+.remove-checkboxes {
+    display: none;
+
+    width: 18px;
+    height: 18px;
+
+    margin: 0;
+
+    cursor: pointer;
+
+    accent-color: #b91c1c;
+}
+
+
+.remove-checkboxes.active {
+    display: block;
+
+    width: 18px;
+    height: 18px;
+}
+
+
+/* =========================================
+   MULTIPLE REMOVE BUTTON
+========================================= */
+
+.confirm-multiple-removal-btn {
+    display: none;
+}
+
+
+.confirm-multiple-removal-btn.active {
+    display: inline-flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 9px 16px;
+
+    border: none;
+    border-radius: 8px;
+
+    background-color: #991b1b;
+    color: white;
+
+    font-size: 0.9rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.confirm-multiple-removal-btn.active:hover {
+    background-color: #7f1d1d;
+
+    transform: translateY(-1px);
+}
+
+
+/* =========================================
+   EMPTY DIRECTORY
+========================================= */
+
+.no-results {
+    padding: 50px 20px;
+
+    text-align: center;
+
+    color: #7b8797;
+
+    font-size: 1rem;
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 850px) {
+
+    .student-info-bar {
+        grid-template-columns: 1fr;
+
+        gap: 16px;
+    }
+
+
+    .student-stats {
+        grid-template-columns:
+            minmax(100px, 1fr)
+            minmax(100px, 1fr)
+            38px
+            20px;
+
+        width: 100%;
+    }
+
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 550px) {
+
+    .student-info-bar {
+        padding: 16px;
+
+        gap: 14px;
+    }
+
+
+    .student-name {
+        font-size: 1rem;
+    }
+
+
+    .student-basic-info {
+        gap: 8px;
+
+        font-size: 0.82rem;
+    }
+
+
+    .student-stats {
+        grid-template-columns: 1fr 1fr 38px;
+
+        gap: 8px;
+    }
+
+
+    .student-stat {
+        min-width: 0;
+
+        padding: 8px 6px;
+
+        font-size: 0.82rem;
+    }
+
+
+    .remove-checkboxes {
+        grid-column: 1 / -1;
+
+        justify-self: end;
+    }
+
+
+    .remove-checkboxes.active {
+        display: block;
+    }
+
+}
+
+/* =========================================
+   STUDENT PAYMENT STATUS
+========================================= */
+
+.student-payment-status {
+    min-width: 150px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    gap: 4px;
+
+    padding: 10px 14px;
+
+    background-color: #f8fafc;
+
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+}
+
+
+/* Payment checkbox */
+
+.payment-checkbox {
+    width: 20px;
+    height: 20px;
+
+    margin-bottom: 2px;
+
+    cursor: pointer;
+
+    accent-color: #15803d;
+}
+
+
+/* "Student Payment Status" */
+
+.payment-status-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+
+    color: #64748b;
+
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+
+    text-align: center;
+}
+
+
+/* Paid / Not Paid text */
+
+.payment-status-text {
+    font-size: 0.82rem;
+    font-weight: 700;
+
+    color: #334155;
+}
