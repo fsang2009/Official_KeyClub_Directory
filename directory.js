@@ -474,7 +474,6 @@ confirmRemovalBtn.addEventListener(
       const deletePromises =
         studentRemovalArray.map(
           (studentId) => {
-
             return deleteDoc(
               doc(
                 database,

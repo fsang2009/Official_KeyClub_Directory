@@ -1,98 +1,339 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Key Club Directory</title>
-    <link rel ="stylesheet" href ="directory.css">
-   
+    <title>Key Club Attendance</title>
+    <link rel="stylesheet" href="attendance.css">
 </head>
+
 <body>
-    <section class ="header" class ="header">
-        <div class ="header-main" class ="header-main">
+
+    <!-- HEADER -->
+    <section class="header">
+        <div class="header-main">
             <h1>Southport Key Club Directory</h1>
             <p>View points, hours, attendance, and fee payment.</p>
-    
         </div>
-        
 
-        <div class ="select-directory-tab">
-            <a href ="index.html" class ="directory-tab-option"> Hours and Points</a>
-            <a href ="memberFee.html" class ="directory-tab-option"> Member fees</a>
-            <a href ="attendance.html" class ="directory-tab-option">Attendance Log</a>
+        <div class="select-directory-tab">
+            <a href="index.html" class="directory-tab-option">Hours and Points</a>
+            <a href="memberFee.html" class="directory-tab-option">Member Fees</a>
+            <a href="attendance.html" class="directory-tab-option active">Attendance Log</a>
         </div>
     </section>
 
+
+    <!-- MAIN -->
+    <main class="main-directory">
+
+        <div class="attendance-page-heading">
+            <div>
+                <span class="page-eyebrow">Attendance Management</span>
+                <h2>Events & Attendance</h2>
+                <p>View Key Club meetings and service events, track attendance, and manage event information.</p>
+            </div>
+
+            <button class="add-event-button" id ="add-event-button">+ Add New Event</button>
+        </div>
+
+
+        <!-- SEARCH -->
     
 
 
-    <section class ="main-directory" class ="main-directory">
-        <div class ="tab-type">
-            <h2>You are currently viewing attendance logs</h2>
-        </div>
-        <div class ="search">
-            <input class ="search-bar" id ="event-search-bar" placeholder ="Search events by name">
-            <button class ="enter-search">Enter</button>
-        </div>
-        
-        <button class ="add-student" id ="add-event-button">
-            Add New Event
-        </button>
+        <!-- EVENT COLUMNS -->
+        <!-- EVENT COLUMNS -->
+<section class="attendance-event-grid">
 
-        <!-- Add Event Modal -->
-        <div class="modal-overlay" id="add-event-modal">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h2>Add New Event</h2>
-                    <button class="modal-close" id="event-modal-close-btn">&times;</button>
+    <!-- MEETINGS -->
+    <div class="event-section">
+        <div class="event-section-header">
+            <div>
+                <div class="event-heading-row">
+                    <div class="event-heading-icon meeting-icon">M</div>
+                    <h3>Meetings</h3>
                 </div>
-                <div class="modal-body">
-                    <form class="add-event-form" id="add-event-form">
-                        <div class="form-group">
-                            <label for="event-name">Event Name</label>
-                            <input type="text" id="event-name" name="event-name" required placeholder="Enter event name">
-                            <span class="error-message" id="event-name-error"></span>
-                        </div>
-                        <div class="form-row">
-                            <div class="form-group">
-                                <label for="event-date">Date</label>
-                                <input type="date" id="event-date" name="event-date" required>
-                                <span class="error-message" id="event-date-error"></span>
-                            </div>
-                            <div class="form-group">
-                                <label for="event-time">Time</label>
-                                <input type="time" id="event-time" name="event-time" required>
-                                <span class="error-message" id="event-time-error"></span>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-type">Event Type</label>
-                            <select id="event-type" name="event-type" required>
-                                <option value="">Select type</option>
-                                <option value="meeting">Meeting</option>
-                                <option value="service">Service</option>
-                            </select>
-                            <span class="error-message" id="event-type-error"></span>
-                        </div>
-                        <div class="form-group">
-                            <label for="event-description">Description</label>
-                            <textarea id="event-description" name="event-description" rows="3" placeholder="Enter event description (optional)"></textarea>
-                        </div>
-                
-                        <div class="modal-actions">
-                            <button type="button" class="btn-cancel" id="event-modal-cancel-btn">Cancel</button>
-                            <button type="submit" class="btn-submit">Add Event</button>
-                        </div>
-                    </form>
+                <p>General meetings and club gatherings.</p>
+            </div>
+
+            <span class="event-count" id="meeting-event-count">0 Events</span>
+        </div>
+
+        <!-- MEETING SEARCH -->
+        <div class="event-search">
+            <input
+                type="text"
+                class="search-bar"
+                id="meeting-search-bar"
+                placeholder="Search meetings..."
+            >
+            <button
+                type="button"
+                class="enter-search"
+                id="meeting-search-button"
+            >
+                Search
+            </button>
+        </div>
+
+        <!-- MEETING LIST -->
+        <div class="event-list" id="meeting-event-list">
+            <!-- Rendered from JavaScript -->
+        </div>
+    </div>
+
+
+    <!-- SERVICE -->
+    <div class="event-section">
+        <div class="event-section-header">
+            <div>
+                <div class="event-heading-row">
+                    <div class="event-heading-icon service-icon">S</div>
+                    <h3>Service</h3>
+                </div>
+                <p>Volunteer opportunities and service projects.</p>
+            </div>
+
+         
+        </div>
+
+        <!-- SERVICE SEARCH -->
+        <div class="event-search">
+            <input
+                type="text"
+                class="search-bar"
+                id="service-search-bar"
+                placeholder="Search service events..."
+            >
+            <button
+                type="button"
+                class="enter-search"
+                id="service-search-button"
+            >
+                Search
+            </button>
+        </div>
+
+        <!-- SERVICE LIST -->
+        <div class="event-list" id="service-event-list">
+            <!-- Rendered from JavaScript -->
+        </div>
+    </div>
+
+</section>
+    </main>
+
+
+    <!-- SEPTEMBER MEETING MODAL -->
+    <div class="modal-overlay" id="meeting-modal">
+        <a href="#" class="modal-background" aria-label="Close event"></a>
+
+        <div class="modal-content event-info-modal">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-event-type">Meeting</span>
+                    <h2 id ="meeting-title">September General Meeting</h2>
+                </div>
+
+                <a href="#" class="modal-close">&times;</a>
+            </div>
+
+            <div class="modal-body">
+                <div class="event-detail-grid">
+                    <div class="event-detail">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" id ="meeting-date">September 4, 2026</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Time</span>
+                        <span class="detail-value" id ="meeting-time">12:55 PM – 1:55 PM</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value" id ="meeting-location">Room 212</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Attendance</span>
+                        <span class="detail-value" id="meeting-attendance">42 Members</span>
+                    </div>
+                </div>
+
+                <div class="event-description-section">
+                    <h3>Event Description</h3>
+                    <p id ="meeting-description">
+                        September's general Key Club meeting covered upcoming volunteer
+                        opportunities, officer announcements, membership expectations,
+                        and upcoming club activities.
+                    </p>
+                </div>
+
+                <div class="event-summary-box">
+                    <div>
+                        <span class="summary-number" id ="summary-attendance">42</span>
+                        <span class="summary-label">Attended</span>
+                    </div>
+
+                    <div>
+                        <span class="summary-number">8</span>
+                        <span class="summary-label" id ="summary-absence">Absent</span>
+                    </div>
+
+                    <div>
+                        <span class="summary-number">84%</span>
+                        <span class="summary-label" id ="summary-attendance-percentage">Attendance</span>
+                    </div>
+                </div>
+
+                <div class="modal-actions">
+                    <a href="#" class="btn-close">Close</a>
                 </div>
             </div>
         </div>
+    </div>
 
-        <div class ="student-info-container">
-            <div class ="student-info-bar">
-            </div> 
+
+   
+    <!-- PARK CLEANUP MODAL -->
+    <div class="modal-overlay" id="service-park-cleanup">
+        <a href="#" class="modal-background" aria-label="Close event"></a>
+
+        <div class="modal-content event-info-modal">
+            <div class="modal-header service-modal-header">
+                <div>
+                    <span class="modal-event-type">Service</span>
+                    <h2>Fall Park Cleanup</h2>
+                </div>
+
+                <a href="#" class="modal-close">&times;</a>
+            </div>
+
+            <div class="modal-body">
+                <div class="event-detail-grid">
+                    <div class="event-detail">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value">September 14, 2026</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Time</span>
+                        <span class="detail-value">10:00 AM – 1:00 PM</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Location</span>
+                        <span class="detail-value">Southport Park</span>
+                    </div>
+
+                    <div class="event-detail">
+                        <span class="detail-label">Volunteers</span>
+                        <span class="detail-value">24 Members</span>
+                    </div>
+                </div>
+
+                <div class="event-description-section">
+                    <h3>Event Description</h3>
+                    <p>
+                        Members worked together to clean walking paths,
+                        collect litter, and improve public areas throughout Southport Park.
+                    </p>
+                </div>
+
+                <div class="modal-actions">
+                    <a href="#" class="btn-close">Close</a>
+                </div>
+            </div>
         </div>
-    </section>
- <script src ="attendance.js" type ="module" defer></script>
+    </div>
+
+
+    
+
+    <!-- ADD EVENT MODAL -->
+    <div class="modal-overlay" id="add-event-modal">
+        <a href="#" class="modal-background" aria-label="Close modal"></a>
+
+        <div class="modal-content">
+            <div class="modal-header">
+                <div>
+                    <span class="modal-event-type">Event Management</span>
+                    <h2>Add New Event</h2>
+                </div>
+
+                <button class="modal-close" id ="event-modal-close-btn">&times;</button>
+            </div>
+
+            <div class="modal-body">
+                <form class="add-event-form" id="add-event-form">
+
+                    <div class="form-group">
+                        <label for="event-name">Event Name</label>
+                        <input
+                            type="text"
+                            id="event-name"
+                            name="event-name"
+                            placeholder="Enter event name"
+                            required
+                        >
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="event-date">Date</label>
+                            <input type="date" id="event-date" name="event-date" required>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="event-time">Time</label>
+                            <input type="time" id="event-time" name="event-time" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="event-location">Location</label>
+                        <input
+                            type="text"
+                            id="event-location"
+                            name="event-location"
+                            placeholder="Enter event location"
+                        >
+                    </div>
+
+                    <div class="form-group">
+                        <label for="event-type">Event Type</label>
+                        <select id="event-type" name="event-type" required>
+                            <option value="">Select event type</option>
+                            <option value="meeting">Meeting</option>
+                            <option value="service">Service</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="event-description">Description</label>
+                        <textarea
+                            id="event-description"
+                            name="event-description"
+                            rows="4"
+                            placeholder="Enter event description..."
+                        ></textarea>
+                    </div>
+
+                    <div class="modal-actions">
+                        <button id ="event-modal-cancel-btn" class="btn-cancel">Cancel</button>
+                        <button type="submit" class="btn-submit">Add Event</button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="attendance.js" type="module" defer></script>
 </body>
+
 </html>

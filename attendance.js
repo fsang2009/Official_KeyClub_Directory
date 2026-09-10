@@ -1,319 +1,302 @@
 import { database } from './firebaseconfig';
+import { collection, addDoc, onSnapshot, getDocs, doc, getDoc } from 'firebase/firestore';
 
-import {
-  collection,
-  addDoc,
-  onSnapshot,
-  doc,
-  deleteDoc,
-  getDocs
-} from 'firebase/firestore';
+document.addEventListener('DOMContentLoaded', () => {
 
-
-document.addEventListener('DOMContentLoaded', ()=>{
-
-// ============================================================
-// ELEMENTS
-// ============================================================
-
-const addStudentButton = document.getElementById('add-student-button');
-
-const studentList = document.getElementById('student-info-container');
-
-const removeStudentModal = document.getElementById(
-  'remove-student-modal'
-);
-
-const addStudentForm = document.getElementById('add-student-form');
-
-const addStudentModal = document.getElementById('add-student-modal');
-
-const closeStudentModal = document.getElementById('modal-close-btn');
-
-const cancelStudentAddButton = document.getElementById(
-  'modal-cancel-btn'
-);
-
-const studentIDInput = document.getElementById('student-id');
-const studentFirstNameInput = document.getElementById('first-name');
-const studentLastNameInput = document.getElementById('last-name');
-const studentGradeInput = document.getElementById('grade');
-
-const searchbar = document.getElementById('search-bar');
-
-const removeMultipleStudentsButton = document.getElementById(
-  'remove-multiple-students-button'
-);
-
-const confirmRemovalBtn = document.getElementById(
-  'confirm-remove-multiple'
-);
+    // DOM ELEMENTS
+    const addEventButton = document.getElementById('add-event-button');
+    const addEventModal = document.getElementById('add-event-modal');
+    const addEventForm = document.getElementById('add-event-form');
+    const closeEventModalButton = document.getElementById('event-modal-close-btn');
+    const cancelEventModalButton = document.getElementById('event-modal-cancel-btn');
+    const serviceEventList = document.getElementById('service-event-list');
+    const meetingEventList = document.getElementById('meeting-event-list');
 
 
-// ============================================================
-// VARIABLES
-// ============================================================
+    // MODAL
+    const openEventModal = () => {
+        addEventModal.classList.add('active');
+    };
 
-let selectedStudentId = null;
+    const closeEventModal = () => {
+        addEventModal.classList.remove('active');
+    };
 
-let removeMode = false;
-
-let studentRemovalArray = [];
-
-
-// ============================================================
-// STUDENT HTML
-// ============================================================
-
-const createStudentHTML = (student, docId) => {
-  return `
-    <div class="student-info-bar">
-
-      <div class="student-main-info">
-
-        <div class="student-name">
-          ${student.firstName} ${student.lastName}
-        </div>
-
-        <div class="student-basic-info">
-          <span>ID: ${student.studentID}</span>
-          <span>Grade: ${student.grade}</span>
-        </div>
-
-      </div>
-
-      <div class="student-stats">
-
-        <div class="student-stat">
-          Hours: ${student.hours}
-        </div>
-
-        <div class="student-stat">
-          Points: ${student.points}
-        </div>
-
-        <button
-          class="remove-student"
-          data-id="${docId}"
-          style="background: red;"
-        >
-          🗑
-        </button>
-
-        <input
-          type="checkbox"
-          data-id="${docId}"
-          class="remove-checkboxes ${removeMode ? 'active' : ''}"
-        >
-
-      </div>
-
-    </div>
-  `;
-};
-
-
-// ============================================================
-// RENDER STUDENTS
-// ============================================================
-
-const renderStudentList = () => {
-
-  if (!studentList) return;
-
-  onSnapshot(collection(database, 'users'), (snapshot) => {
-
-    let html = '';
-
-    snapshot.forEach((studentDoc) => {
-
-      const student = studentDoc.data();
-
-      const docId = studentDoc.id;
-
-      html += createStudentHTML(student, docId);
-
+    addEventButton.addEventListener('click', ()=>{
+        console.log('add event button event listener working');
+        addEventModal.classList.add('active');
+        openEventModal();
     });
-
-    studentList.innerHTML = html;
-  });
-};
-
-
-// ============================================================
-// SINGLE STUDENT DELETE
-// ============================================================
-
-const setupDeleteListener = () => {
-
-  if (!studentList) return;
-  studentList.addEventListener('click', (event) => {
-    const deleteButton = event.target.closest('.remove-student');
-    if (!deleteButton) return;
-
-    selectedStudentId = deleteButton.dataset.id;
-
-    console.log(
-      'Opening delete modal for document ID:',
-      selectedStudentId
-    );
-
-    removeStudentModal.classList.add('active');
-  });
-};
+    closeEventModalButton.addEventListener('click', ()=>{
+        console.log('closeEventModalButton working ');
+        closeEventModal();
+    });
+    cancelEventModalButton.addEventListener('click', closeEventModal());
 
 
+    // DATE FORMATTER
+    const formatEventDate = (dateString) => {
+        const [year, month, day] = dateString.split('-');
 
-
-
-// ============================================================
-// SEARCH STUDENTS
-// ============================================================
-/*
-searchbar.addEventListener('input', async (event) => {
-
-  const key = event.target.value;
-
-  const cleanKey =
-    key
-      .toLowerCase()
-      .replace(/\s+/g, '');
-
-
-  try {
-    const querySnapshot = await getDocs(
-      collection(database, 'users')
-    );
-
-
-    const renderArray =
-      querySnapshot.docs.map((studentDoc) => ({
-        id: studentDoc.id,
-        ...studentDoc.data()
-      }));
-
-
-    const liveRenderArray =
-      renderArray.filter((user) => {
-
-        const userFirstName =
-          String(user.firstName || '')
-            .toLowerCase();
-        const userLastName =
-          String(user.lastName || '')
-            .toLowerCase();
-        const userStudentID =
-          String(user.studentID || '')
-            .toLowerCase();
-        const userFirstAndLastName =
-          `${userFirstName}${userLastName}`;
-        return (
-          userFirstName.includes(cleanKey) ||
-          userLastName.includes(cleanKey) ||
-          userStudentID.includes(cleanKey) ||
-          userFirstAndLastName.includes(cleanKey)
+        const date = new Date(
+            Number(year),
+            Number(month) - 1,
+            Number(day)
         );
-      });
+
+        return {
+            month: date.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
+            day
+        };
+    };
 
 
-    let html = '';
+    // MEETING HTML
+    const createMeetingEventHTML = (event, eventID) => {
+        const date = formatEventDate(event.eventDate);
+
+        return `
+            <article class="event-row">
+                <div class="event-date">
+                    <span class="event-month">${date.month}</span>
+                    <span class="event-day">${date.day}</span>
+                </div>
+
+                <div class="event-main-info">
+                    <div class="event-name">${event.eventName}</div>
+
+                    <div class="event-meta">
+                        <span>${event.eventTime}</span>
+                        <span class="meta-divider">•</span>
+                        <span>${event.eventLocation}</span>
+                    </div>
+
+                    <div class="event-attendance">
+                        ${event.volunteerTotal} attendees
+                    </div>
+                </div>
+
+                <div class="event-actions">
+                    <span class="event-type-badge meeting">Meeting</span>
+
+                    <button
+                        type="button"
+                        class="view-event1-button"
+                        data-id="${eventID}"
+                    >
+                        View Event
+                    </button>
+                </div>
+            </article>
+        `;
+    };
 
 
-    liveRenderArray.forEach((student) => {
+    // SERVICE HTML
+    const createServiceEventHTML = (event, eventID) => {
+        const date = formatEventDate(event.eventDate);
 
-      html += createStudentHTML(
-        student,
-        student.id
-      );
+        return `
+            <article class="event-row">
+                <div class="event-date service-date">
+                    <span class="event-month">${date.month}</span>
+                    <span class="event-day">${date.day}</span>
+                </div>
 
+                <div class="event-main-info">
+                    <div class="event-name">${event.eventName}</div>
+
+                    <div class="event-meta">
+                        <span>${event.eventTime}</span>
+                        <span class="meta-divider">•</span>
+                        <span>${event.eventLocation}</span>
+                    </div>
+
+                    <div class="event-attendance">
+                        ${event.volunteerTotal} volunteers
+                    </div>
+                </div>
+
+                <div class="event-actions">
+                    <span class="event-type-badge service">Service</span>
+
+                    <button
+                        type="button"
+                        class="view-event1-button"
+                        data-id="${eventID}"
+                    >
+                        View Event
+                    </button>
+                </div>
+            </article>
+        `;
+    };
+
+
+    // LIVE EVENT LIST
+    const renderEventLists = () => {
+        onSnapshot(collection(database, 'events'), (snapshot) => {
+            let meetingHTML = '';
+            let serviceHTML = '';
+
+            snapshot.forEach((eventDoc) => {
+                const eventData = eventDoc.data();
+                const eventID = eventDoc.id;
+
+                if (eventData.eventType === 'meeting') {
+                    meetingHTML += createMeetingEventHTML(eventData, eventID);
+                }
+
+                if (eventData.eventType === 'service') {
+                    serviceHTML += createServiceEventHTML(eventData, eventID);
+                }
+            });
+
+            meetingEventList.innerHTML = meetingHTML;
+            serviceEventList.innerHTML = serviceHTML;
+        });
+    };
+
+
+    // ADD EVENT
+    addEventForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
+
+        const eventName = document.getElementById('event-name').value.trim();
+        const eventDate = document.getElementById('event-date').value;
+        const eventTime = document.getElementById('event-time').value;
+        const eventType = document.getElementById('event-type').value;
+        const eventLocation = document.getElementById('event-location').value.trim();
+        const eventDescription = document.getElementById('event-description').value.trim();
+
+        try {
+            await addDoc(collection(database, 'events'), {
+                eventName,
+                eventDate,
+                eventTime,
+                eventType: eventType.toLowerCase(),
+                eventLocation,
+                eventDescription,
+                volunteerTotal: 0
+            });
+
+            addEventForm.reset();
+            closeEventModal();
+
+        } catch (error) {
+            console.error('Error adding event:', error);
+        }
     });
 
+    //search events 
+    const serviceEventSearch = document.getElementById('service-search-bar');
+    const meetingEventSearch = document.getElementById('meeting-search-bar');
 
-    studentList.innerHTML = html;
+
+    serviceEventSearch.addEventListener('input', async(event)=>{
+        const key = event.target.value;
+
+        const cleanKey = key.toLowerCase().replace(/\s+/g, '');
+
+        try {
+            const querySnapshot = await getDocs(
+                collection(database, "events")
+            );
+
+            const fullEventsArray = querySnapshot.docs.map((eventDoc)=>({
+                id: eventDoc.id,
+                ...eventDoc.data()
+            }));
+
+            const serviceArray = fullEventsArray.filter(event=>{return event.eventType === 'service'})
+            const liveRenderServiceArray = serviceArray.filter((event)=>{
+                const eventName = event.eventName.toLowerCase().replaceAll(' ', '');
+                return(
+                    eventName.includes(cleanKey)
+                );
+            });
+
+            let html = ''
+            liveRenderServiceArray.forEach((event)=>{
+                html += createServiceEventHTML(
+                    event, 
+                    event.id
+                );
+            });
+
+            serviceEventList.innerHTML= html;
+        }catch(error){
+            console.log(error);
+        }
+    }
+) 
+
+// view event modal
+
+let memberCount = 0;
+
+const getMemberCount = async () => {
+    const snapshot = await getDocs(collection(database, 'users'));
+    memberCount = snapshot.docs.length;
+};
+
+const meetingEventDetailModal = document.getElementById('meeting-modal');
+
+const meetingTitle = document.getElementById('meeting-title');
+const meetingDate = document.getElementById('meeting-date');
+const meetingTime = document.getElementById('meeting-time');
+const meetingLocation = document.getElementById('meeting-location');
+const meetingAttendance = document.getElementById('meeting-attendance');
+const meetingDescription = document.getElementById('meeting-description');
+const meetingSummaryAttendance = document.getElementById('summary-attendance');
+const meetingSummaryAbsence = document.getElementById('sumary-absence');
+const meetingSummaryPercentage = document.getElementById('summary-attendance-percentage');
 
 
-  } catch (error) {
+const openSelectedEvent = async (event) => {
+    const eventTarget = event.target.closest('.view-event1-button');
 
-    console.error(
-      'Error searching students:',
-      error
-    );
+    if (!eventTarget) return;
 
-  }
+    const selectedEventID = eventTarget.dataset.id;
+
+    try {
+        const eventRef = doc(database, 'events', selectedEventID);
+        const eventSnapshot = await getDoc(eventRef);
+
+        if (!eventSnapshot.exists()) {
+            console.log('Event does not exist.');
+            return;
+        }
+
+        const actualEventData = eventSnapshot.data();
+
+        if (actualEventData.eventType === 'meeting') {
+            meetingEventDetailModal.classList.add('active');
+
+            // We'll populate the modal here next
+        }
+
+        else if (actualEventData.eventType === 'service') {
+            // We'll open/populate service modal here next
+        }
+
+    } catch (error) {
+        console.error('Error retrieving event:', error);
+    }
+};
+
+
+const setupEventViewListener = () => {
+    meetingEventList.addEventListener('click', openSelectedEvent);
+    serviceEventList.addEventListener('click', openSelectedEvent);
+};
+
+    // INITIALIZE
+    renderEventLists();
+    setupEventViewListener();
+    getMemberCount();
 
 });
 
-*/
-
-
-
-// ============================================================
-// EVENT ADDING
-// ============================================================
-
-const addEventButton = document.getElementById('add-event-button');
-const addEventModal = document.getElementById('add-event-modal');
-const closeEventModalButton = document.getElementById('event-modal-close-btn');
-const cancelEventModalButton = document.getElementById('event-modal-cancel-btn');
-
-
-const viewEventModal = ()=>{
-    addEventModal.classList.add('active');
-}
-
-addEventButton.addEventListener('click',()=>{
-    console.log('add event working');
-    viewEventModal();
-})
-
-const closeEventModal = ()=>{
-    addEventModal.classList.remove('active');
-}
-
-
-closeEventModalButton.addEventListener('click',()=>{closeEventModal()});
-cancelEventModalButton.addEventListener('click',()=>{closeEventModal()});
-
-addEventModal.addEventListener('submit', async(event)=>{
-    event.preventDefault();
-    const eventName = document.getElementById('event-name').value;
-    const eventDate = document.getElementById('event-date').value;
-    const eventTime = document.getElementById('event-time').value;
-    const eventType = document.getElementById('event-type').value;
-    const eventDescription = document.getElementById('event-description').value;
-
-    const collectionRef = collection(database, "events");
-    try{
-        await addDoc(collectionRef,{
-            eventName: eventName,
-            eventDate: eventDate,
-            eventTime: eventTime,
-            eventType: eventType,
-            eventDescription: eventDescription
-        } );
-
-        event.target.reset();
-        closeEventModal();
-    
-    } catch(error){
-        console.log(error);
-    }
-
-
-
-})
-
-
-
-// ============================================================
-// INITIALIZE
-// ============================================================
-
-document.addEventListener(
-  'DOMContentLoaded',
-  () => {
-    renderStudentList();
-    setupDeleteListener();
-  }
-);
-})
+ 

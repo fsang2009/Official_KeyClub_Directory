@@ -1,0 +1,1481 @@
+/* ==========================================================
+   GENERAL RESET
+========================================================== */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+
+:root {
+    --primary: #003b70;
+    --primary-light: #0072bc;
+    --primary-hover: #005b98;
+
+    --service: #28755c;
+    --service-light: #eaf6f1;
+
+    --background: #f4f7fb;
+
+    --white: #ffffff;
+
+    --text-main: #1e293b;
+    --text-secondary: #64748b;
+    --text-light: #94a3b8;
+
+    --border: #e2e8f0;
+    --border-light: #edf2f7;
+}
+
+
+body {
+    min-height: 100vh;
+
+    font-family:
+        Arial,
+        Helvetica,
+        sans-serif;
+
+    background-color: var(--background);
+
+    color: var(--text-main);
+}
+
+
+
+/* ==========================================================
+   HEADER
+========================================================== */
+
+.header {
+    padding: 50px 7% 0;
+
+    background:
+        linear-gradient(
+            135deg,
+            #003b70,
+            #005596
+        );
+
+    color: white;
+
+    box-shadow:
+        0 4px 15px rgba(0, 0, 0, 0.12);
+}
+
+
+.header-main {
+    max-width: 1400px;
+
+    margin: 0 auto 35px;
+}
+
+
+.header-main h1 {
+    margin-bottom: 8px;
+
+    font-size: 2.5rem;
+
+    font-weight: 700;
+
+    letter-spacing: -0.5px;
+}
+
+
+.header-main p {
+    font-size: 1rem;
+
+    color:
+        rgba(255, 255, 255, 0.8);
+}
+
+
+
+/* ==========================================================
+   DIRECTORY NAVIGATION
+========================================================== */
+
+.select-directory-tab {
+    max-width: 1400px;
+
+    margin: auto;
+
+    display: flex;
+
+    gap: 8px;
+}
+
+
+.directory-tab-option {
+    padding: 15px 22px;
+
+    color:
+        rgba(255, 255, 255, 0.8);
+
+    text-decoration: none;
+
+    font-size: 0.95rem;
+
+    font-weight: 600;
+
+    border-radius:
+        8px 8px 0 0;
+
+    transition:
+        background-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.directory-tab-option:hover {
+    color: white;
+
+    background-color:
+        rgba(255, 255, 255, 0.12);
+}
+
+
+.directory-tab-option.active {
+    color: var(--primary);
+
+    background-color:
+        var(--background);
+}
+
+
+
+/* ==========================================================
+   MAIN PAGE
+========================================================== */
+
+.main-directory {
+    width: 92%;
+
+    max-width: 1400px;
+
+    margin: 42px auto 80px;
+}
+
+
+
+/* ==========================================================
+   PAGE HEADING
+========================================================== */
+
+.attendance-page-heading {
+    display: flex;
+
+    align-items: flex-end;
+
+    justify-content: space-between;
+
+    gap: 30px;
+
+    margin-bottom: 30px;
+}
+
+
+.page-eyebrow {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: var(--primary-light);
+
+    font-size: 0.78rem;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    text-transform: uppercase;
+}
+
+
+.attendance-page-heading h2 {
+    margin-bottom: 8px;
+
+    font-size: 1.8rem;
+
+    color: var(--text-main);
+}
+
+
+.attendance-page-heading p {
+    max-width: 650px;
+
+    font-size: 0.95rem;
+
+    line-height: 1.5;
+
+    color: var(--text-secondary);
+}
+
+
+
+/* ==========================================================
+   ADD EVENT BUTTON
+========================================================== */
+
+.add-event-button {
+    flex-shrink: 0;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    min-height: 44px;
+
+    padding: 0 19px;
+
+    border-radius: 9px;
+
+    background-color: var(--primary-light);
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    box-shadow:
+        0 4px 12px
+        rgba(0, 114, 188, 0.18);
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.add-event-button:hover {
+    background-color:
+        var(--primary-hover);
+
+    transform:
+        translateY(-1px);
+
+    box-shadow:
+        0 7px 16px
+        rgba(0, 114, 188, 0.22);
+}
+
+
+
+/* ==========================================================
+   SEARCH AREA
+========================================================== */
+
+.attendance-toolbar {
+    margin-bottom: 30px;
+
+    padding-bottom: 24px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+.search {
+    width: 100%;
+
+    max-width: 600px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+}
+
+
+.search-bar {
+    flex: 1;
+
+    height: 46px;
+
+    padding: 0 16px;
+
+    border:
+        1px solid #d5dde7;
+
+    border-radius: 9px;
+
+    outline: none;
+
+    background-color: white;
+
+    color: var(--text-main);
+
+    font-size: 0.95rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.search-bar::placeholder {
+    color: #9ca3af;
+}
+
+
+.search-bar:focus {
+    border-color:
+        var(--primary-light);
+
+    box-shadow:
+        0 0 0 4px
+        rgba(0, 114, 188, 0.09);
+}
+
+
+.enter-search {
+    height: 46px;
+
+    padding: 0 20px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background-color: #e8eef4;
+
+    color: #334155;
+
+    font-size: 0.9rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+
+.enter-search:hover {
+    background-color: #dae3ec;
+}
+
+
+
+/* ==========================================================
+   TWO COLUMN EVENT LAYOUT
+========================================================== */
+
+.attendance-event-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    align-items: start;
+
+    gap: 28px;
+}
+
+
+
+/* ==========================================================
+   EVENT SECTION
+========================================================== */
+
+.event-section {
+    overflow: hidden;
+
+    background-color: white;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 5px 20px
+        rgba(15, 23, 42, 0.05);
+}
+
+
+
+/* ==========================================================
+   EVENT SECTION HEADER
+========================================================== */
+
+.event-section-header {
+    min-height: 105px;
+
+    padding: 21px 22px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 15px;
+
+    border-bottom:
+        1px solid var(--border);
+}
+
+
+.event-heading-row {
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-bottom: 5px;
+}
+
+
+.event-heading-row h3 {
+    font-size: 1.15rem;
+
+    color: var(--text-main);
+}
+
+
+.event-section-header p {
+    margin-left: 38px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.85rem;
+
+    line-height: 1.4;
+}
+
+
+.event-heading-icon {
+    width: 28px;
+
+    height: 28px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 7px;
+
+    font-size: 0.75rem;
+
+    font-weight: 700;
+}
+
+
+.meeting-icon {
+    color: #075985;
+
+    background-color: #e0f2fe;
+}
+
+
+.service-icon {
+    color: #166534;
+
+    background-color:
+        var(--service-light);
+}
+
+
+.event-count {
+    flex-shrink: 0;
+
+    padding: 6px 10px;
+
+    border-radius: 50px;
+
+    background-color: #f1f5f9;
+
+    color: var(--text-secondary);
+
+    font-size: 0.75rem;
+
+    font-weight: 600;
+}
+
+
+
+/* ==========================================================
+   EVENT LIST
+========================================================== */
+
+.event-list {
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+
+/* ==========================================================
+   EVENT ROW
+========================================================== */
+
+.event-row {
+    position: relative;
+
+    min-height: 110px;
+
+    display: grid;
+
+    grid-template-columns:
+        54px minmax(0, 1fr) auto;
+
+    align-items: center;
+
+    gap: 15px;
+
+    padding: 17px 20px;
+
+    border-bottom:
+        1px solid var(--border-light);
+
+    background-color: white;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+
+.event-row:last-child {
+    border-bottom: none;
+}
+
+
+.event-row:hover {
+    background-color: #fbfdff;
+}
+
+
+
+/* ==========================================================
+   EVENT DATE BOX
+========================================================== */
+
+.event-date {
+    width: 52px;
+
+    height: 58px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 9px;
+
+    background-color: #eef6fc;
+
+    border:
+        1px solid #d8ebf8;
+}
+
+
+.service-date {
+    background-color: #eef8f4;
+
+    border-color: #d9eee5;
+}
+
+
+.event-month {
+    margin-bottom: 2px;
+
+    color: var(--primary-light);
+
+    font-size: 0.62rem;
+
+    font-weight: 800;
+
+    letter-spacing: 0.6px;
+}
+
+
+.service-date .event-month {
+    color: var(--service);
+}
+
+
+.event-day {
+    color: #1e293b;
+
+    font-size: 1.25rem;
+
+    font-weight: 700;
+}
+
+
+
+/* ==========================================================
+   EVENT INFORMATION
+========================================================== */
+
+.event-main-info {
+    min-width: 0;
+}
+
+
+.event-name {
+    margin-bottom: 6px;
+
+    color: #172033;
+
+    font-size: 0.96rem;
+
+    font-weight: 700;
+
+    line-height: 1.3;
+}
+
+
+.event-meta {
+    display: flex;
+
+    align-items: center;
+
+    flex-wrap: wrap;
+
+    gap: 6px;
+
+    margin-bottom: 6px;
+
+    color: var(--text-secondary);
+
+    font-size: 0.79rem;
+}
+
+
+.meta-divider {
+    color: #cbd5e1;
+}
+
+
+.event-attendance {
+    color: var(--text-light);
+
+    font-size: 0.76rem;
+
+    font-weight: 500;
+}
+
+
+
+/* ==========================================================
+   EVENT ACTIONS
+========================================================== */
+
+.event-actions {
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: flex-end;
+
+    gap: 9px;
+}
+
+
+.event-type-badge {
+    display: inline-flex;
+
+    align-items: center;
+
+    padding: 4px 8px;
+
+    border-radius: 50px;
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+}
+
+
+.event-type-badge.meeting {
+    background-color: #e8f4fc;
+
+    color: #0369a1;
+}
+
+
+.event-type-badge.service {
+    background-color: #e9f6f0;
+
+    color: #28755c;
+}
+
+
+.view-event-button {
+    min-width: 88px;
+
+    min-height: 34px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 12px;
+
+    border:
+        1px solid #d7e0e8;
+
+    border-radius: 7px;
+
+    background-color: white;
+
+    color: #334155;
+
+    text-decoration: none;
+
+    font-size: 0.76rem;
+
+    font-weight: 600;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease;
+}
+
+
+.view-event-button:hover {
+    color: var(--primary-light);
+
+    background-color: #f5faff;
+
+    border-color: #b7d9ed;
+}
+
+
+
+/* ==========================================================
+   MODAL OVERLAY
+========================================================== */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 1000;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 25px;
+
+    opacity: 0;
+
+    visibility: hidden;
+
+    pointer-events: none;
+
+    transition:
+        opacity 0.2s ease,
+        visibility 0.2s ease;
+}
+
+
+.modal-overlay:target {
+    opacity: 1;
+
+    visibility: visible;
+
+    pointer-events: auto;
+}
+
+
+.modal-background {
+    position: absolute;
+
+    inset: 0;
+
+    background-color:
+        rgba(15, 23, 42, 0.62);
+
+    backdrop-filter:
+        blur(3px);
+}
+
+
+
+/* ==========================================================
+   MODAL CONTENT
+========================================================== */
+
+.modal-content {
+    position: relative;
+
+    z-index: 2;
+
+    width: 92%;
+
+    max-width: 580px;
+
+    max-height: 90vh;
+
+    overflow-y: auto;
+
+    background-color: white;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 25px 70px
+        rgba(0, 0, 0, 0.3);
+
+    transform:
+        translateY(10px);
+
+    transition:
+        transform 0.2s ease;
+}
+
+
+.modal-overlay:target .modal-content {
+    transform:
+        translateY(0);
+}
+
+
+
+/* ==========================================================
+   MODAL HEADER
+========================================================== */
+
+.modal-header {
+    padding: 22px 25px;
+
+    display: flex;
+
+    align-items: flex-start;
+
+    justify-content: space-between;
+
+    gap: 25px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #003b70,
+            #005596
+        );
+
+    color: white;
+}
+
+
+.service-modal-header {
+    background:
+        linear-gradient(
+            135deg,
+            #1e664f,
+            #328066
+        );
+}
+
+
+.modal-header h2 {
+    font-size: 1.35rem;
+
+    line-height: 1.3;
+}
+
+
+.modal-event-type {
+    display: block;
+
+    margin-bottom: 5px;
+
+    color:
+        rgba(255, 255, 255, 0.7);
+
+    font-size: 0.68rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+
+    text-transform: uppercase;
+}
+
+
+.modal-close {
+    width: 32px;
+
+    height: 32px;
+
+    flex-shrink: 0;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 6px;
+
+    color: white;
+
+    text-decoration: none;
+
+    font-size: 1.7rem;
+
+    font-weight: 300;
+
+    transition:
+        background-color 0.2s ease;
+}
+
+
+.modal-close:hover {
+    background-color:
+        rgba(255, 255, 255, 0.13);
+}
+
+
+
+/* ==========================================================
+   MODAL BODY
+========================================================== */
+
+.modal-body {
+    padding: 25px;
+}
+
+
+
+/* ==========================================================
+   EVENT DETAIL GRID
+========================================================== */
+
+.event-detail-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, minmax(0, 1fr));
+
+    gap: 12px;
+
+    margin-bottom: 25px;
+}
+
+
+.event-detail {
+    padding: 13px 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 4px;
+
+    background-color: #f8fafc;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 8px;
+}
+
+
+.detail-label {
+    color: var(--text-light);
+
+    font-size: 0.67rem;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+    text-transform: uppercase;
+}
+
+
+.detail-value {
+    color: #334155;
+
+    font-size: 0.87rem;
+
+    font-weight: 600;
+}
+
+
+
+/* ==========================================================
+   EVENT DESCRIPTION
+========================================================== */
+
+.event-description-section {
+    margin-bottom: 24px;
+}
+
+
+.event-description-section h3 {
+    margin-bottom: 8px;
+
+    color: var(--text-main);
+
+    font-size: 0.95rem;
+}
+
+
+.event-description-section p {
+    color: var(--text-secondary);
+
+    font-size: 0.88rem;
+
+    line-height: 1.65;
+}
+
+
+
+/* ==========================================================
+   EVENT SUMMARY
+========================================================== */
+
+.event-summary-box {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    margin-bottom: 24px;
+
+    overflow: hidden;
+
+    border:
+        1px solid var(--border);
+
+    border-radius: 9px;
+
+    background-color: #f8fafc;
+}
+
+
+.event-summary-box > div {
+    padding: 14px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 3px;
+
+    border-right:
+        1px solid var(--border);
+}
+
+
+.event-summary-box > div:last-child {
+    border-right: none;
+}
+
+
+.summary-number {
+    color: #172033;
+
+    font-size: 1.15rem;
+
+    font-weight: 700;
+}
+
+
+.summary-label {
+    color: var(--text-secondary);
+
+    font-size: 0.69rem;
+
+    font-weight: 600;
+}
+
+
+
+/* ==========================================================
+   FORM
+========================================================== */
+
+.add-event-form {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 18px;
+}
+
+
+.form-row {
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 14px;
+}
+
+
+.form-group {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 7px;
+}
+
+
+.form-group label {
+    color: #334155;
+
+    font-size: 0.82rem;
+
+    font-weight: 600;
+}
+
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+
+    padding:
+        11px 13px;
+
+    border:
+        1px solid #d5dde7;
+
+    border-radius: 8px;
+
+    outline: none;
+
+    background-color: white;
+
+    color: var(--text-main);
+
+    font-family: inherit;
+
+    font-size: 0.9rem;
+
+    transition:
+        border-color 0.2s ease,
+        box-shadow 0.2s ease;
+}
+
+
+.form-group input,
+.form-group select {
+    height: 43px;
+}
+
+
+.form-group textarea {
+    min-height: 95px;
+
+    resize: vertical;
+}
+
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+    border-color:
+        var(--primary-light);
+
+    box-shadow:
+        0 0 0 3px
+        rgba(0, 114, 188, 0.09);
+}
+
+
+
+/* ==========================================================
+   MODAL ACTIONS
+========================================================== */
+
+.modal-actions {
+    display: flex;
+
+    justify-content: flex-end;
+
+    gap: 10px;
+
+    padding-top: 18px;
+
+    border-top:
+        1px solid var(--border-light);
+}
+
+
+.btn-close,
+.btn-cancel,
+.btn-submit {
+    min-height: 41px;
+
+    display: inline-flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 0 18px;
+
+    border-radius: 8px;
+
+    font-size: 0.85rem;
+
+    font-weight: 600;
+
+    text-decoration: none;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+.btn-close,
+.btn-cancel {
+    border:
+        1px solid var(--border);
+
+    background-color: white;
+
+    color: #475569;
+}
+
+
+.btn-close:hover,
+.btn-cancel:hover {
+    background-color: #f8fafc;
+}
+
+
+.btn-submit {
+    border: none;
+
+    background-color: var(--primary-light);
+
+    color: white;
+}
+
+
+.btn-submit:hover {
+    background-color: var(--primary-hover);
+
+    transform:
+        translateY(-1px);
+}
+
+
+
+/* ==========================================================
+   TABLET
+========================================================== */
+
+@media (max-width: 1050px) {
+
+    .attendance-event-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+
+/* ==========================================================
+   SMALL TABLET
+========================================================== */
+
+@media (max-width: 700px) {
+
+    .header {
+        padding:
+            35px 5% 0;
+    }
+
+
+    .header-main h1 {
+        font-size: 2rem;
+    }
+
+
+    .select-directory-tab {
+        overflow-x: auto;
+
+        white-space: nowrap;
+    }
+
+
+    .main-directory {
+        width: 92%;
+
+        margin-top: 30px;
+    }
+
+
+    .attendance-page-heading {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .add-event-button {
+        width: fit-content;
+    }
+
+
+    .search {
+        max-width: none;
+    }
+
+
+    .event-detail-grid {
+        grid-template-columns: 1fr;
+    }
+
+}
+
+
+
+/* ==========================================================
+   MOBILE
+========================================================== */
+
+@media (max-width: 520px) {
+
+    .header-main h1 {
+        font-size: 1.7rem;
+    }
+
+
+    .directory-tab-option {
+        padding:
+            13px 15px;
+
+        font-size: 0.82rem;
+    }
+
+
+    .attendance-page-heading h2 {
+        font-size: 1.5rem;
+    }
+
+
+    .search {
+        flex-direction: column;
+
+        align-items: stretch;
+    }
+
+
+    .enter-search {
+        width: 100%;
+    }
+
+
+    .event-section-header {
+        align-items: flex-start;
+    }
+
+
+    .event-section-header p {
+        margin-left: 0;
+
+        margin-top: 8px;
+    }
+
+
+    .event-row {
+        grid-template-columns:
+            50px minmax(0, 1fr);
+
+        align-items: start;
+    }
+
+
+    .event-actions {
+        grid-column: 1 / -1;
+
+        flex-direction: row;
+
+        align-items: center;
+
+        justify-content: flex-end;
+    }
+
+
+    .event-summary-box {
+        grid-template-columns: 1fr;
+    }
+
+
+    .event-summary-box > div {
+        border-right: none;
+
+        border-bottom:
+            1px solid var(--border);
+    }
+
+
+    .event-summary-box > div:last-child {
+        border-bottom: none;
+    }
+
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+
+    .modal-overlay {
+        padding: 12px;
+    }
+
+
+    .modal-content {
+        width: 100%;
+    }
+
+
+    .modal-header,
+    .modal-body {
+        padding: 20px;
+    }
+
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
