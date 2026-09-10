@@ -44,7 +44,7 @@ Total Duration: ${c-l}ms`),Y.resolve({didRun:!0,sequenceNumbersCollected:r,targe
             <div class="student-stat">Hours: ${n.hours}</div>
             <div class="student-stat">Points: ${n.points}</div>
             
-            <!-- 🔑 FIXED: Changed id to a class, and attached the Firestore ID to a data attribute -->
+            <!-- FIXED: Changed id to a class, and attached the Firestore ID to a data attribute -->
             <button class="remove-student" data-id="${r}" style="background:red;">🗑️</button>
           </div>
         </div>
