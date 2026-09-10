@@ -720,7 +720,7 @@ body {
 }
 
 
-.view-event-button {
+.view-event1-button {
     min-width: 88px;
 
     min-height: 34px;
@@ -755,7 +755,7 @@ body {
 }
 
 
-.view-event-button:hover {
+.view-event1-button:hover {
     color: var(--primary-light);
 
     background-color: #f5faff;
@@ -1477,5 +1477,322 @@ body {
 }
 
 .modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+/* EVENT ACTION BUTTON GROUP */
+.event-button-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+
+/* VIEW EVENT BUTTON */
+.view-event1-button {
+    min-height: 34px;
+    padding: 0 12px;
+
+    border: 1px solid #d7e0e8;
+    border-radius: 7px;
+
+    background-color: white;
+    color: #334155;
+
+    font-size: 0.76rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.view-event1-button:hover {
+    color: #0072bc;
+    background-color: #f5faff;
+    border-color: #b7d9ed;
+
+    transform: translateY(-1px);
+}
+
+
+/* DELETE EVENT BUTTON */
+.delete-event-button {
+    width: 34px;
+    height: 34px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+
+    border: 1px solid #fecaca;
+    border-radius: 7px;
+
+    background-color: #fff1f2;
+
+    font-size: 0.95rem;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+.delete-event-button:hover {
+    background-color: #ffe4e6;
+    border-color: #fca5a5;
+
+    transform: translateY(-1px);
+}
+
+.delete-event-button:active {
+    transform: translateY(0);
+}
+
+
+/* =========================================
+   DELETE EVENT MODAL
+========================================= */
+
+.delete-event-modal-content {
+    width: 90%;
+    max-width: 420px;
+
+    padding: 32px 28px;
+
+    text-align: center;
+
+    background-color: white;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(15, 23, 42, 0.25);
+}
+
+
+.delete-event-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #fff1f2;
+
+    font-size: 1.6rem;
+}
+
+
+.delete-event-modal-content h2 {
+    margin-bottom: 10px;
+
+    color: #1e293b;
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+
+.delete-event-message {
+    margin-bottom: 25px;
+
+    color: #64748b;
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+.delete-event-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+.delete-modal-cancel,
+.delete-modal-confirm {
+    flex: 1;
+
+    min-height: 42px;
+
+    border-radius: 8px;
+
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+/* CANCEL */
+.delete-modal-cancel {
+    border: 1px solid #dbe2ea;
+
+    background-color: white;
+
+    color: #475569;
+}
+
+.delete-modal-cancel:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+
+/* CONFIRM DELETE */
+.delete-modal-confirm {
+    border: 1px solid #dc2626;
+
+    background-color: #dc2626;
+
+    color: white;
+}
+
+.delete-modal-confirm:hover {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+
+    transform: translateY(-1px);
+}
+
+.delete-modal-confirm:active {
+    transform: translateY(0);
+}
+/* =========================================
+   DELETE EVENT MODAL
+========================================= */
+
+.delete-event-modal-content {
+    width: 90%;
+    max-width: 420px;
+
+    padding: 32px 28px;
+
+    text-align: center;
+
+    background-color: white;
+
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(15, 23, 42, 0.25);
+}
+
+
+.delete-event-icon {
+    width: 58px;
+    height: 58px;
+
+    margin: 0 auto 18px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background-color: #fff1f2;
+
+    font-size: 1.6rem;
+}
+
+
+.delete-event-modal-content h2 {
+    margin-bottom: 10px;
+
+    color: #1e293b;
+
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+
+.delete-event-message {
+    margin-bottom: 25px;
+
+    color: #64748b;
+
+    font-size: 0.9rem;
+    line-height: 1.55;
+}
+
+
+.delete-event-actions {
+    display: flex;
+    gap: 10px;
+}
+
+
+.delete-modal-cancel,
+.delete-modal-confirm {
+    flex: 1;
+
+    min-height: 42px;
+
+    border-radius: 8px;
+
+    font-size: 0.88rem;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background-color 0.2s ease,
+        border-color 0.2s ease,
+        transform 0.15s ease;
+}
+
+
+/* CANCEL */
+.delete-modal-cancel {
+    border: 1px solid #dbe2ea;
+
+    background-color: white;
+
+    color: #475569;
+}
+
+.delete-modal-cancel:hover {
+    background-color: #f8fafc;
+    border-color: #cbd5e1;
+}
+
+
+/* CONFIRM DELETE */
+.delete-modal-confirm {
+    border: 1px solid #dc2626;
+
+    background-color: #dc2626;
+
+    color: white;
+}
+
+.delete-modal-confirm:hover {
+    background-color: #b91c1c;
+    border-color: #b91c1c;
+
+    transform: translateY(-1px);
+}
+
+.delete-modal-confirm:active {
     transform: translateY(0);
 }

@@ -1,5 +1,5 @@
 import { database } from './firebaseconfig';
-import { collection, addDoc, onSnapshot, getDocs, doc, getDoc } from 'firebase/firestore';
+import { collection, addDoc, onSnapshot, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const meetingEventList = document.getElementById('meeting-event-list');
 
 
-    // MODAL
+    // ADD EVENT MODAL
     const openEventModal = () => {
         addEventModal.classList.add('active');
     };
@@ -22,27 +22,23 @@ document.addEventListener('DOMContentLoaded', () => {
         addEventModal.classList.remove('active');
     };
 
-    addEventButton.addEventListener('click', ()=>{
+    addEventButton.addEventListener('click', () => {
         console.log('add event button event listener working');
-        addEventModal.classList.add('active');
         openEventModal();
     });
-    closeEventModalButton.addEventListener('click', ()=>{
-        console.log('closeEventModalButton working ');
+
+    closeEventModalButton.addEventListener('click', () => {
+        console.log('closeEventModalButton working');
         closeEventModal();
     });
-    cancelEventModalButton.addEventListener('click', closeEventModal());
+
+    cancelEventModalButton.addEventListener('click', closeEventModal);
 
 
     // DATE FORMATTER
     const formatEventDate = (dateString) => {
         const [year, month, day] = dateString.split('-');
-
-        const date = new Date(
-            Number(year),
-            Number(month) - 1,
-            Number(day)
-        );
+        const date = new Date(Number(year), Number(month) - 1, Number(day));
 
         return {
             month: date.toLocaleString('en-US', { month: 'short' }).toUpperCase(),
@@ -71,21 +67,24 @@ document.addEventListener('DOMContentLoaded', () => {
                         <span>${event.eventLocation}</span>
                     </div>
 
-                    <div class="event-attendance">
-                        ${event.volunteerTotal} attendees
-                    </div>
+                    <div class="event-attendance">${event.volunteerTotal} attendees</div>
                 </div>
 
                 <div class="event-actions">
                     <span class="event-type-badge meeting">Meeting</span>
 
-                    <button
-                        type="button"
-                        class="view-event1-button"
-                        data-id="${eventID}"
-                    >
+                    <button type="button" class="view-event1-button" data-id="${eventID}">
                         View Event
                     </button>
+
+                    <button
+                type="button"
+                class="delete-event-button"
+                data-id="${eventID}"
+                aria-label="Delete event"
+            >
+                🗑
+            </button>
                 </div>
             </article>
         `;
@@ -98,37 +97,48 @@ document.addEventListener('DOMContentLoaded', () => {
 
         return `
             <article class="event-row">
-                <div class="event-date service-date">
-                    <span class="event-month">${date.month}</span>
-                    <span class="event-day">${date.day}</span>
-                </div>
+    <div class="event-date service-date">
+        <span class="event-month">${date.month}</span>
+        <span class="event-day">${date.day}</span>
+    </div>
 
-                <div class="event-main-info">
-                    <div class="event-name">${event.eventName}</div>
+    <div class="event-main-info">
+        <div class="event-name">${event.eventName}</div>
 
-                    <div class="event-meta">
-                        <span>${event.eventTime}</span>
-                        <span class="meta-divider">•</span>
-                        <span>${event.eventLocation}</span>
-                    </div>
+        <div class="event-meta">
+            <span>${event.eventTime}</span>
+            <span class="meta-divider">•</span>
+            <span>${event.eventLocation}</span>
+        </div>
 
-                    <div class="event-attendance">
-                        ${event.volunteerTotal} volunteers
-                    </div>
-                </div>
+        <div class="event-attendance">
+            ${event.volunteerTotal} volunteers
+        </div>
+    </div>
 
-                <div class="event-actions">
-                    <span class="event-type-badge service">Service</span>
+    <div class="event-actions">
+        <span class="event-type-badge service">Service</span>
 
-                    <button
-                        type="button"
-                        class="view-event1-button"
-                        data-id="${eventID}"
-                    >
-                        View Event
-                    </button>
-                </div>
-            </article>
+        <div class="event-button-group">
+            <button
+                type="button"
+                class="view-event1-button"
+                data-id="${eventID}"
+            >
+                View Event
+            </button>
+
+            <button
+                type="button"
+                class="delete-event-button"
+                data-id="${eventID}"
+                aria-label="Delete event"
+            >
+                🗑
+            </button>
+        </div>
+    </div>
+</article>
         `;
     };
 
@@ -188,115 +198,266 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    //search events 
+
+    // SEARCH EVENTS
     const serviceEventSearch = document.getElementById('service-search-bar');
     const meetingEventSearch = document.getElementById('meeting-search-bar');
 
 
-    serviceEventSearch.addEventListener('input', async(event)=>{
+    // SERVICE SEARCH
+    serviceEventSearch.addEventListener('input', async (event) => {
         const key = event.target.value;
-
         const cleanKey = key.toLowerCase().replace(/\s+/g, '');
 
         try {
-            const querySnapshot = await getDocs(
-                collection(database, "events")
-            );
+            const querySnapshot = await getDocs(collection(database, 'events'));
 
-            const fullEventsArray = querySnapshot.docs.map((eventDoc)=>({
+            const fullEventsArray = querySnapshot.docs.map((eventDoc) => ({
                 id: eventDoc.id,
                 ...eventDoc.data()
             }));
 
-            const serviceArray = fullEventsArray.filter(event=>{return event.eventType === 'service'})
-            const liveRenderServiceArray = serviceArray.filter((event)=>{
+            const serviceArray = fullEventsArray.filter((event) => {
+                return event.eventType === 'service';
+            });
+
+            const liveRenderServiceArray = serviceArray.filter((event) => {
                 const eventName = event.eventName.toLowerCase().replaceAll(' ', '');
-                return(
-                    eventName.includes(cleanKey)
-                );
+                return eventName.includes(cleanKey);
             });
 
-            let html = ''
-            liveRenderServiceArray.forEach((event)=>{
-                html += createServiceEventHTML(
-                    event, 
-                    event.id
-                );
+            let html = '';
+
+            liveRenderServiceArray.forEach((event) => {
+                html += createServiceEventHTML(event, event.id);
             });
 
-            serviceEventList.innerHTML= html;
-        }catch(error){
+            serviceEventList.innerHTML = html;
+
+        } catch (error) {
             console.log(error);
         }
-    }
-) 
+    });
 
-// view event modal
 
-let memberCount = 0;
+    // MEETING SEARCH
+    meetingEventSearch.addEventListener('input', async (event) => {
+        const key = event.target.value;
+        const cleanKey = key.toLowerCase().replace(/\s+/g, '');
 
-const getMemberCount = async () => {
-    const snapshot = await getDocs(collection(database, 'users'));
-    memberCount = snapshot.docs.length;
+        try {
+            const querySnapshot = await getDocs(collection(database, 'events'));
+
+            const fullEventsArray = querySnapshot.docs.map((eventDoc) => ({
+                id: eventDoc.id,
+                ...eventDoc.data()
+            }));
+
+            const meetingArray = fullEventsArray.filter((event) => {
+                return event.eventType === 'meeting';
+            });
+
+            const liveRenderMeetingArray = meetingArray.filter((event) => {
+                const eventName = event.eventName.toLowerCase().replaceAll(' ', '');
+                return eventName.includes(cleanKey);
+            });
+
+            let html = '';
+
+            liveRenderMeetingArray.forEach((event) => {
+                html += createMeetingEventHTML(event, event.id);
+            });
+
+            meetingEventList.innerHTML = html;
+
+        } catch (error) {
+            console.log(error);
+        }
+    });
+
+
+    // MEMBER COUNT
+    let memberCount = 0;
+
+    const getMemberCount = async () => {
+        const snapshot = await getDocs(collection(database, 'users'));
+        memberCount = snapshot.docs.length;
+    };
+
+
+    // MEETING DETAIL MODAL
+    const meetingEventDetailModal = document.getElementById('meeting-modal');
+
+    const meetingTitle = document.getElementById('meeting-title');
+    const meetingDate = document.getElementById('meeting-date');
+    const meetingTime = document.getElementById('meeting-time');
+    const meetingLocation = document.getElementById('meeting-location');
+    const meetingAttendance = document.getElementById('meeting-attendance');
+    const meetingDescription = document.getElementById('meeting-description');
+    const meetingSummaryAttendance = document.getElementById('summary-attendance');
+    const meetingSummaryAbsence = document.getElementById('summary-absence');
+    const meetingSummaryPercentage = document.getElementById('summary-attendance-percentage');
+
+
+    // SERVICE DETAIL MODAL
+    const serviceEventDetailModal = document.getElementById('service-modal');
+
+    const serviceTitle = document.getElementById('service-title');
+    const serviceDate = document.getElementById('service-date');
+    const serviceTime = document.getElementById('service-time');
+    const serviceLocation = document.getElementById('service-location');
+    const serviceAttendance = document.getElementById('service-attendance');
+    const serviceDescription = document.getElementById('service-description');
+    const serviceSummaryAttendance = document.getElementById('service-summary-attendance');
+    const serviceSummaryAbsence = document.getElementById('service-summary-absence');
+    const serviceSummaryPercentage = document.getElementById('service-summary-attendance-percentage');
+
+
+    // OPEN SELECTED EVENT
+    const openSelectedEvent = async (event) => {
+        const eventTarget = event.target.closest('.view-event1-button');
+        if (!eventTarget) return;
+
+        const selectedEventID = eventTarget.dataset.id;
+
+        try {
+            const eventRef = doc(database, 'events', selectedEventID);
+            const eventSnapshot = await getDoc(eventRef);
+
+            if (!eventSnapshot.exists()) {
+                console.log('Event does not exist.');
+                return;
+            }
+
+            const actualEventData = eventSnapshot.data();
+            const attendance = actualEventData.volunteerTotal || 0;
+            const absences = Math.max(memberCount - attendance, 0);
+            const percentage = memberCount > 0
+                ? Math.round(100 * (attendance / memberCount))
+                : 0;
+
+
+            // MEETING
+            if (actualEventData.eventType === 'meeting') {
+                meetingEventDetailModal.classList.add('active');
+
+                meetingTitle.innerHTML = actualEventData.eventName;
+                meetingDate.innerHTML = actualEventData.eventDate;
+                meetingTime.innerHTML = actualEventData.eventTime;
+                meetingLocation.innerHTML = actualEventData.eventLocation;
+                meetingAttendance.innerHTML = attendance;
+                meetingDescription.innerHTML = actualEventData.eventDescription;
+                meetingSummaryAttendance.innerHTML = attendance;
+                meetingSummaryAbsence.innerHTML = absences;
+                meetingSummaryPercentage.innerHTML = `${percentage}%`;
+            }
+
+
+            // SERVICE
+            else if (actualEventData.eventType === 'service') {
+                serviceEventDetailModal.classList.add('active');
+
+                serviceTitle.innerHTML = actualEventData.eventName;
+                serviceDate.innerHTML = actualEventData.eventDate;
+                serviceTime.innerHTML = actualEventData.eventTime;
+                serviceLocation.innerHTML = actualEventData.eventLocation;
+                serviceAttendance.innerHTML = attendance;
+                serviceDescription.innerHTML = actualEventData.eventDescription;
+                serviceSummaryAttendance.innerHTML = attendance;
+                serviceSummaryAbsence.innerHTML = absences;
+                serviceSummaryPercentage.innerHTML = `${percentage}%`;
+            }
+
+        } catch (error) {
+            console.error('Error retrieving event:', error);
+        }
+    };
+
+
+    // CLOSE MEETING MODAL
+    const closeMeetingModalBtn = document.getElementById('close-meeting-modal');
+
+    closeMeetingModalBtn.addEventListener('click', () => {
+        meetingEventDetailModal.classList.remove('active');
+    });
+
+
+    // CLOSE SERVICE MODAL
+    const closeServiceModalBtn = document.getElementById('close-service-modal');
+
+    closeServiceModalBtn.addEventListener('click', () => {
+        serviceEventDetailModal.classList.remove('active');
+    });
+
+
+    // VIEW EVENT LISTENERS
+    const setupEventViewListener = () => {
+        meetingEventList.addEventListener('click', openSelectedEvent);
+        serviceEventList.addEventListener('click', openSelectedEvent);
+    };
+
+
+
+
+    // DELETE EVENT
+const deleteEventModal = document.getElementById('delete-event-modal');
+const deleteEventButton = document.getElementById('confirm-event-delete');
+const cancelDeleteEventButton = document.getElementById('cancel-event-delete');
+
+let eventIdToDelete = null;
+
+
+// OPEN DELETE MODAL
+const deleteSelectedEvent = (event) => {
+    const deleteButton = event.target.closest('.delete-event-button');
+
+    if (!deleteButton) return;
+
+    eventIdToDelete = deleteButton.dataset.id;
+
+    console.log('Selected event for deletion:', eventIdToDelete);
+
+    deleteEventModal.classList.add('active');
 };
 
-const meetingEventDetailModal = document.getElementById('meeting-modal');
 
-const meetingTitle = document.getElementById('meeting-title');
-const meetingDate = document.getElementById('meeting-date');
-const meetingTime = document.getElementById('meeting-time');
-const meetingLocation = document.getElementById('meeting-location');
-const meetingAttendance = document.getElementById('meeting-attendance');
-const meetingDescription = document.getElementById('meeting-description');
-const meetingSummaryAttendance = document.getElementById('summary-attendance');
-const meetingSummaryAbsence = document.getElementById('sumary-absence');
-const meetingSummaryPercentage = document.getElementById('summary-attendance-percentage');
+// SETUP DELETE LISTENERS
+const setupEventDeleteListener = () => {
+    meetingEventList.addEventListener('click', deleteSelectedEvent);
+    serviceEventList.addEventListener('click', deleteSelectedEvent);
+};
 
 
-const openSelectedEvent = async (event) => {
-    const eventTarget = event.target.closest('.view-event1-button');
-
-    if (!eventTarget) return;
-
-    const selectedEventID = eventTarget.dataset.id;
+// CONFIRM DELETE
+deleteEventButton.addEventListener('click', async () => {
+    if (!eventIdToDelete) return;
 
     try {
-        const eventRef = doc(database, 'events', selectedEventID);
-        const eventSnapshot = await getDoc(eventRef);
+        const eventRef = doc(database, 'events', eventIdToDelete);
 
-        if (!eventSnapshot.exists()) {
-            console.log('Event does not exist.');
-            return;
-        }
+        await deleteDoc(eventRef);
 
-        const actualEventData = eventSnapshot.data();
-
-        if (actualEventData.eventType === 'meeting') {
-            meetingEventDetailModal.classList.add('active');
-
-            // We'll populate the modal here next
-        }
-
-        else if (actualEventData.eventType === 'service') {
-            // We'll open/populate service modal here next
-        }
+        deleteEventModal.classList.remove('active');
+        eventIdToDelete = null;
 
     } catch (error) {
-        console.error('Error retrieving event:', error);
+        console.error('Error deleting event:', error);
     }
-};
-
-
-const setupEventViewListener = () => {
-    meetingEventList.addEventListener('click', openSelectedEvent);
-    serviceEventList.addEventListener('click', openSelectedEvent);
-};
-
-    // INITIALIZE
-    renderEventLists();
-    setupEventViewListener();
-    getMemberCount();
-
 });
 
- 
+
+// CANCEL DELETE
+cancelDeleteEventButton.addEventListener('click', () => {
+    deleteEventModal.classList.remove('active');
+    eventIdToDelete = null;
+});
+
+
+    // INITIALIZE
+    // INITIALIZE
+getMemberCount();
+renderEventLists();
+setupEventViewListener();
+setupEventDeleteListener();
+
+});
