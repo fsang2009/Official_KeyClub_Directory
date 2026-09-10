@@ -305,6 +305,29 @@
                         </select>
                     </div>
 
+                    <<div class="form-group">
+    <div class="attendee-header">
+        <label>Students Attending</label>
+        <span id="selected-attendee-count">0 selected</span>
+    </div>
+
+    <input
+        type="text"
+        id="attendee-search"
+        class="attendee-search"
+        placeholder="Search students by name or ID..."
+    >
+
+    <div class="attendee-actions">
+        <button type="button" id="select-all-attendees">Select All</button>
+        <button type="button" id="clear-attendees">Clear</button>
+    </div>
+
+    <div id="event-attendee-list" class="event-attendee-list">
+        <!-- Students rendered from JavaScript -->
+    </div>
+</div>
+
                     <div class="form-group">
                         <label for="event-description">Description</label>
                         <textarea

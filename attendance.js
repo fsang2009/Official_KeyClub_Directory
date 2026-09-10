@@ -1,9 +1,20 @@
 import { database } from './firebaseconfig';
-import { collection, addDoc, onSnapshot, getDocs, doc, getDoc, deleteDoc } from 'firebase/firestore';
-
+import {
+    collection,
+    addDoc,
+    onSnapshot,
+    getDocs,
+    doc,
+    getDoc,
+    deleteDoc,
+    updateDoc,
+    increment
+} from 'firebase/firestore';
 document.addEventListener('DOMContentLoaded', () => {
 
     // DOM ELEMENTS
+    const eventAttendeeList = document.getElementById('event-attendee-list');
+const eventTypeInput = document.getElementById('event-type');
     const addEventButton = document.getElementById('add-event-button');
     const addEventModal = document.getElementById('add-event-modal');
     const addEventForm = document.getElementById('add-event-form');
@@ -11,6 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelEventModalButton = document.getElementById('event-modal-cancel-btn');
     const serviceEventList = document.getElementById('service-event-list');
     const meetingEventList = document.getElementById('meeting-event-list');
+const attendeeSearch = document.getElementById('attendee-search');
+const selectAllAttendees = document.getElementById('select-all-attendees');
+const clearAttendees = document.getElementById('clear-attendees');
+const selectedAttendeeCount = document.getElementById('selected-attendee-count');
+
 
 
     // ADD EVENT MODAL
@@ -168,35 +184,240 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // ADD EVENT
-    addEventForm.addEventListener('submit', async (event) => {
-        event.preventDefault();
+    // ATTENDEE SELECTOR
 
-        const eventName = document.getElementById('event-name').value.trim();
-        const eventDate = document.getElementById('event-date').value;
-        const eventTime = document.getElementById('event-time').value;
-        const eventType = document.getElementById('event-type').value;
-        const eventLocation = document.getElementById('event-location').value.trim();
-        const eventDescription = document.getElementById('event-description').value.trim();
+const renderAttendeeList = async () => {
+    const snapshot = await getDocs(collection(database, 'users'));
 
-        try {
-            await addDoc(collection(database, 'events'), {
-                eventName,
-                eventDate,
-                eventTime,
-                eventType: eventType.toLowerCase(),
-                eventLocation,
-                eventDescription,
-                volunteerTotal: 0
-            });
+    let html = '';
 
-            addEventForm.reset();
-            closeEventModal();
+    snapshot.forEach((studentDoc) => {
+        const student = studentDoc.data();
 
-        } catch (error) {
-            console.error('Error adding event:', error);
+        html += `
+            <div
+                class="event-student-option"
+                data-search="${student.firstName.toLowerCase()}${student.lastName.toLowerCase()}${String(student.studentID)}"
+            >
+                <label class="event-student-main">
+                    <input
+                        type="checkbox"
+                        class="event-student-checkbox"
+                        data-id="${studentDoc.id}"
+                        data-name="${student.firstName} ${student.lastName}"
+                    >
+
+                    <div>
+                        <div class="event-student-name">
+                            ${student.firstName} ${student.lastName}
+                        </div>
+
+                        <div class="event-student-id">
+                            ID: ${student.studentID}
+                        </div>
+                    </div>
+                </label>
+
+                <div class="service-hours-container">
+                    <input
+                        type="number"
+                        class="service-hours-input"
+                        data-id="${studentDoc.id}"
+                        min="0.5"
+                        step="0.5"
+                        value="1"
+                    >
+
+                    <span>hrs</span>
+                </div>
+            </div>
+        `;
+    });
+
+    eventAttendeeList.innerHTML = html;
+};
+
+
+const updateSelectedCount = () => {
+    const selected = document.querySelectorAll(
+        '.event-student-checkbox:checked'
+    ).length;
+
+    selectedAttendeeCount.innerText = `${selected} selected`;
+};
+
+
+const updateAttendeeRows = () => {
+    const studentRows = document.querySelectorAll('.event-student-option');
+
+    studentRows.forEach((row) => {
+        const checkbox = row.querySelector('.event-student-checkbox');
+
+        row.classList.toggle('selected', checkbox.checked);
+        row.classList.toggle(
+            'service-mode',
+            eventTypeInput.value === 'service'
+        );
+    });
+
+    updateSelectedCount();
+};
+
+
+eventAttendeeList.addEventListener('change', (event) => {
+    if (!event.target.classList.contains('event-student-checkbox')) return;
+
+    updateAttendeeRows();
+});
+
+
+eventTypeInput.addEventListener('change', () => {
+    updateAttendeeRows();
+});
+
+
+attendeeSearch.addEventListener('input', (event) => {
+    const key = event.target.value.toLowerCase().replace(/\s+/g, '');
+
+    const studentRows = document.querySelectorAll('.event-student-option');
+
+    studentRows.forEach((row) => {
+        const studentSearch = row.dataset.search;
+
+        if (studentSearch.includes(key)) {
+            row.style.display = 'flex';
+        } else {
+            row.style.display = 'none';
         }
     });
+});
+
+
+selectAllAttendees.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.event-student-checkbox');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = true;
+    });
+
+    updateAttendeeRows();
+});
+
+
+clearAttendees.addEventListener('click', () => {
+    const checkboxes = document.querySelectorAll('.event-student-checkbox');
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.checked = false;
+    });
+
+    updateAttendeeRows();
+});
+
+
+
+    // ADD EVENT
+    // ADD EVENT
+
+addEventForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+
+    const eventName = document.getElementById('event-name').value.trim();
+    const eventDate = document.getElementById('event-date').value;
+    const eventTime = document.getElementById('event-time').value;
+    const eventType = document.getElementById('event-type').value.toLowerCase();
+    const eventLocation = document.getElementById('event-location').value.trim();
+    const eventDescription = document.getElementById('event-description').value.trim();
+
+    const selectedStudents = document.querySelectorAll(
+        '.event-student-checkbox:checked'
+    );
+
+    const attendees = [];
+
+
+    // BUILD ATTENDEE ARRAY
+    selectedStudents.forEach((checkbox) => {
+        const studentID = checkbox.dataset.id;
+        const studentName = checkbox.dataset.name;
+
+        let hoursAttended = 0;
+        let pointsEarned = 0;
+
+
+        // MEETING = 0.5 POINTS, 0 HOURS
+        if (eventType === 'meeting') {
+            pointsEarned = 0.5;
+            hoursAttended = 0;
+        }
+
+
+        // SERVICE = HOURS AND POINTS ARE THE SAME
+        if (eventType === 'service') {
+            const hoursInput = document.querySelector(
+                `.service-hours-input[data-id="${studentID}"]`
+            );
+
+            hoursAttended = Number(hoursInput.value);
+            pointsEarned = hoursAttended;
+        }
+
+
+        attendees.push({
+            studentID,
+            studentName,
+            hoursAttended,
+            pointsEarned
+        });
+    });
+
+
+    try {
+
+        // CREATE EVENT
+        await addDoc(collection(database, 'events'), {
+            eventName,
+            eventDate,
+            eventTime,
+            eventType,
+            eventLocation,
+            eventDescription,
+            attendees,
+            volunteerTotal: attendees.length
+        });
+
+
+        // UPDATE EACH STUDENT
+        for (const attendee of attendees) {
+            const studentRef = doc(
+                database,
+                'users',
+                attendee.studentID
+            );
+
+            await updateDoc(studentRef, {
+                points: increment(attendee.pointsEarned),
+                hours: increment(attendee.hoursAttended)
+            });
+        }
+
+
+        addEventForm.reset();
+
+        attendeeSearch.value = '';
+
+        document.querySelectorAll('.event-student-option').forEach((row) => {
+            row.style.display = 'flex';
+        });
+
+        clearAttendees.click();
+
+        closeEventModal();
+
+    } catch (error) {
+        console.error('Error adding event:', error);
+    }
+});
 
 
     // SEARCH EVENTS
@@ -453,11 +674,78 @@ cancelDeleteEventButton.addEventListener('click', () => {
 });
 
 
+//update student points/hours from event entry
+
+const renderEventStudentList = async () => {
+    const snapshot = await getDocs(collection(database, 'users'));
+
+    let html = '';
+
+    snapshot.forEach((studentDoc) => {
+        const student = studentDoc.data();
+
+        html += `
+            <div class="event-student-option">
+                <div class="event-student-main">
+                    <input
+                        type="checkbox"
+                        class="event-student-checkbox"
+                        data-id="${studentDoc.id}"
+                        data-name="${student.firstName} ${student.lastName}"
+                    >
+
+                    <div>
+                        <div class="event-student-name">
+                            ${student.firstName} ${student.lastName}
+                        </div>
+
+                        <div class="event-student-id">
+                            ID: ${student.studentID}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="service-hours-container">
+                    <label>Hours</label>
+
+                    <input
+                        type="number"
+                        class="service-hours-input"
+                        data-id="${studentDoc.id}"
+                        min="0.5"
+                        step="0.5"
+                        value="0.5"
+                    >
+                </div>
+            </div>
+        `;
+    });
+
+    eventAttendeeList.innerHTML = html;
+
+    updateAttendanceInputType();
+};
+
+const updateAttendanceInputType = () => {
+    const serviceHourInputs = document.querySelectorAll('.service-hours-container');
+
+    serviceHourInputs.forEach((container) => {
+        if (eventTypeInput.value === 'service') {
+            container.style.display = 'flex';
+        } else {
+            container.style.display = 'none';
+        }
+    });
+};
+
+eventTypeInput.addEventListener('change', updateAttendanceInputType); 
+
     // INITIALIZE
     // INITIALIZE
 getMemberCount();
 renderEventLists();
 setupEventViewListener();
 setupEventDeleteListener();
-
+renderEventStudentList();
+renderAttendeeList();
 });
