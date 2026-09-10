@@ -37,7 +37,59 @@
         <button class ="add-student" id ="add-event-button">
             Add New Event
         </button>
-        
+
+        <!-- Add Event Modal -->
+        <div class="modal-overlay" id="add-event-modal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Add New Event</h2>
+                    <button class="modal-close" id="event-modal-close-btn">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <form class="add-event-form" id="add-event-form">
+                        <div class="form-group">
+                            <label for="event-name">Event Name</label>
+                            <input type="text" id="event-name" name="event-name" required placeholder="Enter event name">
+                            <span class="error-message" id="event-name-error"></span>
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="event-date">Date</label>
+                                <input type="date" id="event-date" name="event-date" required>
+                                <span class="error-message" id="event-date-error"></span>
+                            </div>
+                            <div class="form-group">
+                                <label for="event-time">Time</label>
+                                <input type="time" id="event-time" name="event-time" required>
+                                <span class="error-message" id="event-time-error"></span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-type">Event Type</label>
+                            <select id="event-type" name="event-type" required>
+                                <option value="">Select type</option>
+                                <option value="meeting">Meeting</option>
+                                <option value="service">Service</option>
+                            </select>
+                            <span class="error-message" id="event-type-error"></span>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-description">Description</label>
+                            <textarea id="event-description" name="event-description" rows="3" placeholder="Enter event description (optional)"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="event-location">Location</label>
+                            <input type="text" id="event-location" name="event-location" placeholder="Enter location (optional)">
+                        </div>
+                        <div class="modal-actions">
+                            <button type="button" class="btn-cancel" id="event-modal-cancel-btn">Cancel</button>
+                            <button type="submit" class="btn-submit">Add Event</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
         <div class ="student-info-container">
             <div class ="student-info-bar">
             </div> 
